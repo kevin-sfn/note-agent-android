@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NoteCalendar extends StatefulWidget {
+  const NoteCalendar({super.key});
+
   @override
   _NoteCalendarState createState() => _NoteCalendarState();
 }

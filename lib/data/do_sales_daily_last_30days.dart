@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class DOSaleDetail {
   final String saleDate;
   final int totalAmount;

@@ -135,7 +135,9 @@ class _ConfigPageState extends State<ConfigApp> {
                   ),
                   const Spacer(),
                   TextButton(
-                    onPressed: () => {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed('/');
+                    },
                     child: const Row(
                       children: [
                         Icon(
@@ -280,6 +282,10 @@ class _ConfigPageState extends State<ConfigApp> {
                     ),
                     TextButton(
                       onPressed: _toggleCheckbox,
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(EdgeInsets.zero), // 패딩 제거
+                        overlayColor: MaterialStateProperty.all(Colors.transparent), // 눌렸을 때 투명 색상 설정
+                      ),
                       child: Row(
                         children: [
                           Image.asset(

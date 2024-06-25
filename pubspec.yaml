@@ -78,6 +78,7 @@ flutter:
     - assets\images\settlement_delivery.png
     - assets\images\checkbox_unchecked.png
     - assets\images\checkbox_checked.png
+    - assets\images\login_app_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

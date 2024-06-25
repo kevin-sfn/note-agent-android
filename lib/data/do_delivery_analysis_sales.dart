@@ -33,7 +33,7 @@ class DODeliveryAnalysisSales {
 
   factory DODeliveryAnalysisSales.fromJson(Map<String, dynamic> json) {
     var list = json['deliverySalesList'] as List?;
-    List<DeliverySales>? deliverySalesList = list != null ? list.map((i) => DeliverySales.fromJson(i)).toList() : null;
+    List<DeliverySales>? deliverySalesList = list?.map((i) => DeliverySales.fromJson(i)).toList();
 
     return DODeliveryAnalysisSales(
       totalSalesCount: json['totalSalesCount'],

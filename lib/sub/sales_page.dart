@@ -606,7 +606,7 @@ class ChartSalesPainter extends CustomPainter {
     gridWidth = (_width - leftOffset) / colCount;
 
     final rows = rowCount;
-    final cols = colCount;
+    // final cols = colCount;
 
     int leftText = 0;
     intl.NumberFormat numberFormat = intl.NumberFormat('#,###');
@@ -655,8 +655,8 @@ class ChartSalesPainter extends CustomPainter {
 
     for (int c = 0; c < chartSalesList.length; c++) {
       final x = c * gridWidth + leftOffset;
-      final p1 = Offset(x, 0);
-      final p2 = Offset(x, (_height - bottomOffset));
+      // final p1 = Offset(x, 0);
+      // final p2 = Offset(x, (_height - bottomOffset));
 
       double rectHeightDinein = 0;
       double rectHeightDelivery = 0;
@@ -704,15 +704,15 @@ class ChartSalesPainter extends CustomPainter {
   }
 
   void _drawNodes(Canvas canvas) {
-    var paint = Paint()
-      ..style = PaintingStyle.fill
-      ..color = Colors.amber
-      ..isAntiAlias = true;
-
-    const textStyle = TextStyle(
-      color: Colors.black,
-      fontSize: 18,
-    );
+    // var paint = Paint()
+    //   ..style = PaintingStyle.fill
+    //   ..color = Colors.amber
+    //   ..isAntiAlias = true;
+    //
+    // const textStyle = TextStyle(
+    //   color: Colors.black,
+    //   fontSize: 18,
+    // );
   }
 
   void _drawText(Canvas canvas, centerX, centerY, text, style) {

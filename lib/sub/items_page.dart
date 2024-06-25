@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart' as intl;
 import '/common/api_service.dart';
 import '/common/app_util.dart';
@@ -17,7 +16,7 @@ class ItemsApp extends StatefulWidget {
 class _ItemsAppState extends State<ItemsApp> {
   DateTime _selectedDate = DateTime.now();
   final intl.DateFormat _dateFormat = intl.DateFormat('yy.M.d');
-  static const storage = FlutterSecureStorage();
+  // static const storage = FlutterSecureStorage();
   DOItemsAnalysisRank? _itemsAnalysisRank;
   DOItemsAnalysisRankLast30Days? _itemsAnalysisRankLast30Days;
   int _maxItemPercentage = 0;

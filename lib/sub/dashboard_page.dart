@@ -761,8 +761,8 @@ class ChartPainter extends CustomPainter {
 
     for (int c = 0; c < cols; c++) {
       final x = c * gridWidth + leftOffset;
-      final p1 = Offset(x, 0);
-      final p2 = Offset(x, (_height - bottomOffset));
+      // final p1 = Offset(x, 0);
+      // final p2 = Offset(x, (_height - bottomOffset));
 
       if (chartList.length > c) {
         double rectHeight = 0;
@@ -803,15 +803,15 @@ class ChartPainter extends CustomPainter {
   }
 
   void _drawNodes(Canvas canvas) {
-    var paint = Paint()
-      ..style = PaintingStyle.fill
-      ..color = Colors.amber
-      ..isAntiAlias = true;
-
-    const textStyle = TextStyle(
-      color: Colors.black,
-      fontSize: 18,
-    );
+    // var paint = Paint()
+    //   ..style = PaintingStyle.fill
+    //   ..color = Colors.amber
+    //   ..isAntiAlias = true;
+    //
+    // const textStyle = TextStyle(
+    //   color: Colors.black,
+    //   fontSize: 18,
+    // );
   }
 
   void _drawText(Canvas canvas, centerX, centerY, text, style) {

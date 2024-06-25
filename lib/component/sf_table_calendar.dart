@@ -83,7 +83,7 @@ class _SfTableCalendarState extends State<SfTableCalendar> {
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                    child: Text(lastTwoChars, style: TextStyle(fontSize: 12, color: fontColor ?? Colors.black)),
+                    child: Text(lastTwoChars, style: TextStyle(fontSize: 12, color: fontColor)),
                   ),
                 ),
                 const Spacer(),
