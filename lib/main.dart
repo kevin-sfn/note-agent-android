@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_agent_flutter/main_page.dart';
 import 'package:note_agent_flutter/login_page.dart';
+import 'package:note_agent_flutter/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const LoginPage(),
         '/main': (context) => const MainPage(),
+        '/home': (context) => const HomePage(),
       },
     );
   }

@@ -17,9 +17,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   TextEditingController? _idTextController;
   TextEditingController? _pwTextController;
-  String result = '';
+  // String result = '';
   String _loginId = '';
   String _loginPw = '';
+  String _accessToken = '';
+  String _oAuthAccessToken = '';
+  bool _pinEnabled = false;
   bool _isAutoLogin = false;
   static const storage = FlutterSecureStorage();
 
@@ -94,6 +97,9 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       await storage.write(
           key: 'oauth_refresh_token', value: loginResponse.refresh_token);
 
+      _accessToken = loginResponse.accessToken;
+      _oAuthAccessToken = loginResponse.access_token;
+
       // print('Response.data: $data');
       print('data.accessToken: ${data['accessToken']}');
 
@@ -115,8 +121,15 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     if (_isAutoLogin) {
       bool loginOk = await _login();
       if (loginOk) {
-        Navigator.of(context).pushReplacementNamed('/main');
-        // _enabledPin();
+        if (_accessToken != "" && _oAuthAccessToken != "") {
+          _pinEnabled = await _enabledPin();
+        }
+
+        if (_pinEnabled) {
+          Navigator.of(context).pushReplacementNamed('/home');
+        } else {
+          Navigator.of(context).pushReplacementNamed('/main');
+        }
       }
     }
   }
@@ -134,10 +147,14 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       // 로그인 성공 시 처리
       print('로그인 성공: $response');
       // TODO: 로그인 성공 시 다음 화면으로 이동
-      // Map<String, dynamic> jsonData = response;
-      // var data = jsonData['data'];
+      Map<String, dynamic> jsonData = response;
+      var resultCode = jsonData['resultCode'];
+      var resultMessage = jsonData['resultMessage'];
+      var data = jsonData['data'];
 
-      pinResult = true;
+      var pinEnabled = data['pinEnabled'];
+
+      pinResult = pinEnabled;
     } catch (e) {
       // 로그인 실패 시 처리
       print('enabledPin 실패: $e');
@@ -342,7 +359,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                     var url = 'https://www.google.com';
                     var response = await http.get(Uri.parse(url));
                     setState(() {
-                      result = response.body;
+                      // result = response.body;
                     });
                     // Navigator.of(context).pushNamed('/sign');
                   },
@@ -354,7 +371,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                     var url = 'https://www.google.com';
                     var response = await http.get(Uri.parse(url));
                     setState(() {
-                      result = response.body;
+                      // result = response.body;
                     });
                     // Navigator.of(context).pushNamed('/sign');
                   },
