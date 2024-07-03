@@ -34,7 +34,47 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     id = ModalRoute.of(context)!.settings.arguments as String?;
     return Scaffold(
-      // appBar: AppBar(title: Text('차별화상회'),),
+      appBar: AppBar(
+        // title: const Text('차별화상회'),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(24.0), // 원하는 높이로 설정
+          child: TabBar(
+            tabs: <Tab>[
+              _buildTab(
+                icon: Icons.home,
+                text: '홈',
+              ),
+              _buildTab(
+                icon: Icons.supervised_user_circle,
+                text: '매출',
+              ),
+              _buildTab(
+                icon: Icons.gif_box_outlined,
+                text: '메뉴',
+              ),
+              _buildTab(
+                icon: Icons.delivery_dining,
+                text: '배달',
+              ),
+              _buildTab(
+                icon: Icons.input_outlined,
+                text: '입금',
+              ),
+              _buildTab(
+                icon: Icons.event,
+                text: '발주',
+              ),
+              _buildTab(
+                icon: Icons.settings,
+                text: '설정',
+              ),
+            ],
+            labelColor: Colors.indigo,
+            indicatorColor: Colors.indigoAccent,
+            controller: controller,
+          ),
+        ),
+      ),
       body: TabBarView(
         controller: controller,
         children: const <Widget>[
@@ -47,21 +87,21 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
           ConfigApp(),
         ],
       ),
-      bottomNavigationBar: TabBar(
-        tabs: <Tab>[
-          _buildTab(icon: Icons.home, text: '홈',),
-          _buildTab(icon: Icons.supervised_user_circle, text: '매출',),
-          _buildTab(icon: Icons.gif_box_outlined, text: '메뉴',),
-          _buildTab(icon: Icons.delivery_dining, text: '배달',),
-          _buildTab(icon: Icons.input_outlined, text: '입금',),
-          _buildTab(icon: Icons.event, text: '발주',),
-          _buildTab(icon: Icons.settings, text: '설정',),
-        ],
-        labelColor: Colors.indigo,
-        indicatorColor: Colors.indigoAccent,
-        // indicatorWeight: 6,
-        controller: controller,
-      ),
+      // bottomNavigationBar: TabBar(
+      //   tabs: <Tab>[
+      //     _buildTab(icon: Icons.home, text: '홈',),
+      //     _buildTab(icon: Icons.supervised_user_circle, text: '매출',),
+      //     _buildTab(icon: Icons.gif_box_outlined, text: '메뉴',),
+      //     _buildTab(icon: Icons.delivery_dining, text: '배달',),
+      //     _buildTab(icon: Icons.input_outlined, text: '입금',),
+      //     _buildTab(icon: Icons.event, text: '발주',),
+      //     _buildTab(icon: Icons.settings, text: '설정',),
+      //   ],
+      //   labelColor: Colors.indigo,
+      //   indicatorColor: Colors.indigoAccent,
+      //   // indicatorWeight: 6,
+      //   controller: controller,
+      // ),
     );
   }
 
@@ -76,4 +116,5 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
         ],
       ),
     );
-  }}
+  }
+}

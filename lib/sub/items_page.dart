@@ -80,12 +80,12 @@ class _ItemsAppState extends State<ItemsApp> {
         if (data != null) {
           _itemsAnalysisRank = DOItemsAnalysisRank.fromJson(data);
 
-          if (kDebugMode) {
-            for (var item in _itemsAnalysisRank!.itemRankList) {
-              print(
-                  'itemName: ${item.itemName}, quantity: ${item.quantity}, amount: ${item.amount}');
-            }
-          }
+          // if (kDebugMode) {
+          //   for (var item in _itemsAnalysisRank!.itemRankList) {
+          //     print(
+          //         'itemName: ${item.itemName}, quantity: ${item.quantity}, amount: ${item.amount}');
+          //   }
+          // }
         } else {
           if (kDebugMode) {
             print('getAnalysisItemRank - data is null');
@@ -105,12 +105,12 @@ class _ItemsAppState extends State<ItemsApp> {
         if (data != null) {
           _itemsAnalysisRankLast30Days =
               DOItemsAnalysisRankLast30Days.fromJson(data);
-          if (kDebugMode) {
-            for (var item in _itemsAnalysisRankLast30Days!.itemRankList) {
-              print(
-                  'itemName: ${item.itemName}, quantity: ${item.quantity}, rate: ${item.rate}');
-            }
-          }
+          // if (kDebugMode) {
+          //   for (var item in _itemsAnalysisRankLast30Days!.itemRankList) {
+          //     print(
+          //         'itemName: ${item.itemName}, quantity: ${item.quantity}, rate: ${item.rate}');
+          //   }
+          // }
         } else {
           if (kDebugMode) {
             print('getAnalysisItemRankLast30Days - data is null');
@@ -157,7 +157,7 @@ class _ItemsAppState extends State<ItemsApp> {
                       flex: 1,
                       child: Container(
                         width: 220,
-                        height: 50,
+                        height: 45,
                         margin: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
@@ -208,7 +208,7 @@ class _ItemsAppState extends State<ItemsApp> {
                       flex: 1,
                       child: Container(
                         width: 420,
-                        height: 50,
+                        height: 45,
                         margin: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
@@ -356,7 +356,7 @@ class _ItemsAppState extends State<ItemsApp> {
                       Expanded(
                         flex: 3,
                         child: Container(
-                          margin: const EdgeInsets.all(8.0),
+                          margin: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(color: Colors.white),
@@ -452,7 +452,7 @@ class _ItemsAppState extends State<ItemsApp> {
                         flex: 1,
                         child: Container(
                           padding: const EdgeInsets.only(left: 8, top: 8),
-                          margin: const EdgeInsets.all(8.0),
+                          margin: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(color: Colors.white),
@@ -604,7 +604,7 @@ class _ItemsAppState extends State<ItemsApp> {
   Widget _buildProductInfoWidget(String itemName, int percentage) {
     // final double parentWidth = MediaQuery.of(context).size.width * 0.5;
     // final double barWidth = (percentage / 100) * parentWidth;
-    final double parentWidth = MediaQuery.of(context).size.width * 0.125;
+    final double parentWidth = MediaQuery.of(context).size.width * 0.110;
     final double barWidth = parentWidth.toDouble() * (percentage.toDouble()/_maxItemPercentage.toDouble());
     if (kDebugMode) {
       print('_buildProductInfoWidget - parentWidth: $parentWidth, percentage: $percentage, barWidth: $barWidth');

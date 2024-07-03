@@ -17,13 +17,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   TextEditingController? _idTextController;
   TextEditingController? _pwTextController;
-  // String result = '';
   String _loginId = '';
   String _loginPw = '';
   String _accessToken = '';
   String _oAuthAccessToken = '';
   bool _pinEnabled = false;
   bool _isAutoLogin = false;
+  bool _isUserLogout = false;
   static const storage = FlutterSecureStorage();
 
   @override
@@ -34,7 +34,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       setState(() {
         _idTextController?.text = _loginId;
         _pwTextController?.text = _loginPw;
-        if (_isAutoLogin) {
+        if (_isAutoLogin && !_isUserLogout) {
           _checkAutoLogin();
         }
       });
@@ -105,8 +105,10 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
 
       _loginId = loginId;
       _loginPw = loginPw;
+      _isUserLogout = false;
       _savePreferences();
 
+      loginResult = true;
       loginResult = true;
     } catch (e) {
       // 로그인 실패 시 처리
@@ -167,6 +169,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   Future<void> _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isAutoLogin = prefs.getBool('isAutoLogin') ?? false;
+    _isUserLogout = prefs.getBool('isUserLogout') ?? false;
     _loginId = prefs.getString('loginId') ?? '';
     _loginPw = prefs.getString('loginPw') ?? '';
   }
@@ -174,6 +177,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   void _savePreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isAutoLogin', _isAutoLogin);
+    prefs.setBool('isUserLogout', _isUserLogout);
     prefs.setString('loginId', _loginId);
     prefs.setString('loginPw', _loginPw);
   }

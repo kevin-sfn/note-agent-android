@@ -39,13 +39,13 @@ class _SalesAppState extends State<SalesApp> {
 
   // 최근 30일 데이터를 필터링하는 함수
   List<DOSaleDetail> filterRecent30Days(List<DOSaleDetail> details) {
-    if (kDebugMode) {
-      print(
-          'filterRecent30Days - _selectedDate: $_selectedDate, details.length: ${details.length}');
-      details.forEach((item) {
-        print(item.saleDate);
-      });
-    }
+    // if (kDebugMode) {
+    //   print(
+    //       'filterRecent30Days - _selectedDate: $_selectedDate, details.length: ${details.length}');
+    //   details.forEach((item) {
+    //     print(item.saleDate);
+    //   });
+    // }
 
     const int initialDayDiff = 29;
     DateTime thirtyDaysAgo =
@@ -100,12 +100,12 @@ class _SalesAppState extends State<SalesApp> {
     dailySalesList =
         filterCurrentPageDays(_salesDailyLast30Days!.detail, _pageSelected);
 
-    if (kDebugMode) {
-      print('dailySalesList:');
-      dailySalesList.forEach((item) {
-        print(item.saleDate);
-      });
-    }
+    // if (kDebugMode) {
+    //   print('dailySalesList:');
+    //   dailySalesList.forEach((item) {
+    //     print(item.saleDate);
+    //   });
+    // }
   }
 
   // 날짜 포맷팅 함수

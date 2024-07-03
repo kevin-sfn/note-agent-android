@@ -46,17 +46,17 @@ class _DashboardAppState extends State<DashboardApp> {
       String itemMonth = item.date.substring(0, 6);
 
       if (itemMonth == focusedMonth) {
-        if (kDebugMode) {
-          print('calculateTotalAmount - item.date: ${item.date} (this month)');
-        }
+        // if (kDebugMode) {
+        //   print('calculateTotalAmount - item.date: ${item.date} (this month)');
+        // }
 
         _totalSalesAmount += item.salesAmount;
         _totalDepositAmount += item.depositAmount;
         _totalCount++;
       } else {
-        if (kDebugMode) {
-          print('calculateTotalAmount - item.date: ${item.date} (NOT this month)');
-        }
+        // if (kDebugMode) {
+        //   print('calculateTotalAmount - item.date: ${item.date} (NOT this month)');
+        // }
       }
     }
 
@@ -83,9 +83,9 @@ class _DashboardAppState extends State<DashboardApp> {
     for (var item in calendarDayList) {
       DateTime itemDate = DateTime.parse(item.date);
       if (itemDate.isAfter(startDate.subtract(const Duration(days: 1))) && itemDate.isBefore(endDate)) {
-        if (kDebugMode) {
-          print('calculateSalesAmount - itemDate: $itemDate, salesAmount: ${item.salesAmount}');
-        }
+        // if (kDebugMode) {
+        //   print('calculateSalesAmount - itemDate: $itemDate, salesAmount: ${item.salesAmount}');
+        // }
 
         totalSalesAmount += item.salesAmount;
       }
@@ -138,9 +138,9 @@ class _DashboardAppState extends State<DashboardApp> {
         var data = response.data['data'];
         if (data is List) {
           for (var item in data) {
-            if (kDebugMode) {
-              print('getSalesDeposit - data: $item');
-            }
+            // if (kDebugMode) {
+            //   print('getSalesDeposit - data: $item');
+            // }
             String date = item['date'].toString();
             double salesAmount = item['salesAmount'].toDouble();
             double depositAmount = item['depositAmount'].toDouble();
@@ -150,9 +150,9 @@ class _DashboardAppState extends State<DashboardApp> {
           calculateTotalAmount();
           initChartList(DateTime.now());
         } else {
-          if (kDebugMode) {
-            print('getSalesDeposit - data: $data');
-          }
+          // if (kDebugMode) {
+          //   print('getSalesDeposit - data: $data');
+          // }
         }
       }
       response = await ApiService.getPosScrapingTime('AGENT-1');
@@ -288,8 +288,8 @@ class _DashboardAppState extends State<DashboardApp> {
                   const Spacer(),
                   Container(
                     width: 160,
-                    height: 50,
-                    margin: const EdgeInsets.all(8.0),
+                    height: 45,
+                    margin: const EdgeInsets.only(left: 8.0, right: 8.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.white),
@@ -347,7 +347,7 @@ class _DashboardAppState extends State<DashboardApp> {
                             margin: const EdgeInsets.only(
                               left: 8.0,
                               right: 8.0,
-                              bottom: 8.0,
+                              bottom: 16.0,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white, // 배경색
@@ -408,7 +408,7 @@ class _DashboardAppState extends State<DashboardApp> {
                             margin: const EdgeInsets.only(
                               left: 8.0,
                               right: 8.0,
-                              bottom: 8.0,
+                              bottom: 16.0,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,

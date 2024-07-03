@@ -135,7 +135,9 @@ class _ConfigPageState extends State<ConfigApp> {
                   ),
                   const Spacer(),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isUserLogout', true);
                       Navigator.of(context).pushReplacementNamed('/');
                     },
                     child: const Row(

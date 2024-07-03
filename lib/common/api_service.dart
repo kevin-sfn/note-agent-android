@@ -72,6 +72,35 @@ class ApiService {
     }
   }
 
+  static Future<Map<String, dynamic>> oauthPinValidation({required String number}) async {
+    String accessToken = (await storage.read(key: 'access_token')).toString();
+    String oauthAccessToken = (await storage.read(key: 'oauth_access_token')).toString();
+
+    var url =
+        '$baseUrl/oauth/pin/validation';
+
+    var response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode({
+        'accessToken': oauthAccessToken,
+        'number': number,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      var decodedData = utf8.decode(response.bodyBytes);
+      var responseData = jsonDecode(decodedData);
+      return responseData;
+    } else {
+      throw Exception(
+          'Failed to oauthPinValidation: (${response.statusCode}) ${response.reasonPhrase}');
+    }
+  }
+
   static Future<TApiResponse> getSalesPayment(String salesDate) async {
     String accessToken = (await storage.read(key: 'access_token')).toString();
     String value = (await storage.read(key: 'store_id')).toString();
