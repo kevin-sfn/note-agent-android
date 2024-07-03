@@ -38,8 +38,8 @@ dependencies:
   http: ^1.2.1
   flutter_secure_storage: ^9.0.0
   flutter_riverpod: ^2.5.1
-  syncfusion_flutter_charts: ^25.1.40
-  syncfusion_flutter_datepicker: ^25.1.40
+  syncfusion_flutter_charts: ^26.1.40
+  syncfusion_flutter_datepicker: ^26.1.40
   table_calendar: ^3.1.1
   intl: ^0.19.0
   webview_flutter: ^4.7.0
@@ -55,7 +55,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -70,15 +70,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets\images\dashboard_card.png
-    - assets\images\dashboard_cash.png
-    - assets\images\dashboard_delivery.png
-    - assets\images\dashboard_others.png
-    - assets\images\settlement_card.png
-    - assets\images\settlement_delivery.png
-    - assets\images\checkbox_unchecked.png
-    - assets\images\checkbox_checked.png
-    - assets\images\login_app_icon.png
+    - assets/images/dashboard_card.png
+    - assets/images/dashboard_cash.png
+    - assets/images/dashboard_delivery.png
+    - assets/images/dashboard_others.png
+    - assets/images/settlement_card.png
+    - assets/images/settlement_delivery.png
+    - assets/images/checkbox_unchecked.png
+    - assets/images/checkbox_checked.png
+    - assets/images/login_app_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
