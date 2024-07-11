@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'common/api_service.dart';
@@ -15,15 +16,24 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   WebViewController? _webViewController;
   final TextEditingController _controller = TextEditingController();
+  String _storeName = '';
 
   @override
   void initState() {
     super.initState();
+    _initializeWebView();
+    _loadStoreName();
+  }
+
+  void _initializeWebView() {
     _webViewController = WebViewController()
-      ..loadRequest(Uri.parse(
-          'https://static.chabyulhwa.com/market/assets/note/pages/lock/index.html'))
+      ..loadRequest(Uri.parse('https://static.chabyulhwa.com/market/assets/note/pages/lock/index.html'))
       ..setJavaScriptMode(JavaScriptMode.unrestricted);
-    super.initState();
+  }
+
+  Future<void> _loadStoreName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _storeName = prefs.getString('store_name') ?? '';
   }
 
   @override
@@ -52,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       // 로그인 실패 시 처리
       print('enabledPin 실패: $e');
-      // TODO: 로그인 실패 시 오류 메시지를 사용자에게 표시
+      // TODO: 로그인 실패 시 오류 메시지를 사용자에게 표시+*-
     }
 
     return pinResult;
@@ -127,8 +137,8 @@ class _HomePageState extends State<HomePage> {
                         // 이 부분 추가로 모든 자식을 좌측 정렬
                         children: [
                           Text(
-                            '차이나플레인',
-                            style: TextStyle(
+                            _storeName,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 40,
                             ),

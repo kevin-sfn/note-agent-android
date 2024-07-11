@@ -201,9 +201,6 @@ class _SettlementAppState extends State<SettlementApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(0xED, 0xEE, 0xFC, 1.0),
-      // appBar: AppBar(
-      //   title: const Text('입금'),
-      // ),
       body: _isLoading // 로딩 상태에 따라 다른 위젯을 표시
           ? const Center(child: CircularProgressIndicator()) // 로딩 인디케이터 표시
           : Column(
@@ -213,8 +210,8 @@ class _SettlementAppState extends State<SettlementApp> {
                   children: <Widget>[
                     Container(
                       width: 220,
-                      height: 50,
-                      margin: const EdgeInsets.all(8.0),
+                      height: 40,
+                      margin: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: Colors.white),
@@ -264,7 +261,7 @@ class _SettlementAppState extends State<SettlementApp> {
                               if (_settlementAnalysisDeposit != null)
                                 createTransactionWidget(),
                               const SizedBox(
-                                height: 24,
+                                height: 16,
                               ),
                               SizedBox(
                                 height: 188,
@@ -282,17 +279,11 @@ class _SettlementAppState extends State<SettlementApp> {
                                             costAmount: deposit.feeAmount,
                                             settlementAmount:
                                                 deposit.depositAmount),
-                                    // buildRowItem(salesCount: 10, coName: '배달의민족', salesAmount: 10000, costAmount: 1000, settlementAmount: 8000),
-                                    // buildRowItem(salesCount: 10, coName: '요기요', salesAmount: 10000, costAmount: 1000, settlementAmount: 8000),
-                                    // buildRowItem(salesCount: 10, coName: '쿠팡이츠', salesAmount: 10000, costAmount: 1000, settlementAmount: 8000),
-                                    // buildRowItem(salesCount: 10, coName: '배달의민족', salesAmount: 10000, costAmount: 1000, settlementAmount: 8000),
-                                    // buildRowItem(salesCount: 10, coName: '요기요', salesAmount: 10000, costAmount: 1000, settlementAmount: 8000),
-                                    // buildRowItem(salesCount: 10, coName: '쿠팡이츠', salesAmount: 10000, costAmount: 1000, settlementAmount: 8000),
-                                  ],
+                                    ],
                                 ),
                               ),
                               const SizedBox(
-                                height: 24,
+                                height: 8,
                               ),
                               buildListHeaderCard(),
                               if (_settlementAnalysisDeposit != null)

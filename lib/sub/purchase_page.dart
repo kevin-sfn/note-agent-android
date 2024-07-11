@@ -23,22 +23,18 @@ class _PurchaseAppState extends State<PurchaseApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(''), backgroundColor: const Color.fromRGBO(237, 238, 252, 1.0),),
       backgroundColor: const Color.fromRGBO(237, 238, 252, 1.0),
-      body:
-      // Column(children: [
-        // const SizedBox(height: 10,),
-      Center(
-        child:
-        SizedBox(
-          width: 946,
-          child: WebViewWidget(
-            controller: _webViewController!,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0), // 위 아래 여백 설정
+          child: AspectRatio(
+            aspectRatio: 964 / 636, // 비율 설정
+            child: WebViewWidget(
+              controller: _webViewController!,
+            ),
           ),
         ),
       ),
-      // ],
-    // )
     );
   }
 }

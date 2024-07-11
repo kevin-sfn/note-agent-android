@@ -271,16 +271,13 @@ class _DashboardAppState extends State<DashboardApp> {
     }
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('대시보드'),
-      // ),
       backgroundColor: const Color.fromRGBO(237, 238, 252, 1.0),
       body: _isLoading // 로딩 상태에 따라 다른 위젯을 표시
         ? const Center(child: CircularProgressIndicator()) // 로딩 인디케이터 표시
         : Column(
           children: <Widget>[
             Container(
-              margin: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(4.0),
               child: Row(
                 // 주 축을 양 끝으로 정렬
                 children: [
@@ -288,10 +285,10 @@ class _DashboardAppState extends State<DashboardApp> {
                   const Spacer(),
                   Container(
                     width: 160,
-                    height: 45,
-                    margin: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    height: 40,
+                    margin: const EdgeInsets.only(left: 8.0, right: 4.0),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: Colors.white),
                       color: Colors.white,
                     ),
@@ -327,6 +324,9 @@ class _DashboardAppState extends State<DashboardApp> {
                     width: 400,
                     child: Column(
                       children: <Widget>[
+                        Expanded(
+                          flex: 5,
+                          child:
                         Container(
                           margin: const EdgeInsets.only(
                             left: 8.0,
@@ -338,11 +338,13 @@ class _DashboardAppState extends State<DashboardApp> {
                             color: Colors.white, // 배경색
                             borderRadius: BorderRadius.circular(16.0), // 모서리 라운드 처리
                           ),
-                          height: 420.0,
+                          // height: 420.0,
                           child: _buildDashboardSalesPayment(
                               dashboardSalesPayment: dashboardSalesPayment),
                         ),
+                        ),
                         Expanded(
+                          flex: 2,
                           child: Container(
                             margin: const EdgeInsets.only(
                               left: 8.0,
@@ -388,6 +390,9 @@ class _DashboardAppState extends State<DashboardApp> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
+                        Expanded(
+                          flex: 30,
+                          child:
                         Container(
                           margin: const EdgeInsets.only(
                             left: 8.0,
@@ -398,12 +403,13 @@ class _DashboardAppState extends State<DashboardApp> {
                             color: Colors.white, // 배경색
                             borderRadius: BorderRadius.circular(16.0), // 모서리 라운드 처리
                           ),
-                          height: 230.0,
+                          // height: 230.0,
                           child: Center(
                             child: _buildDashboardSalesBarChart(data: [],),
                           ),
-                        ),
+                        ), ),
                         Expanded(
+                          flex: 55,
                           child: Container(
                             margin: const EdgeInsets.only(
                               left: 8.0,

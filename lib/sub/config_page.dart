@@ -257,10 +257,9 @@ class _ConfigPageState extends State<ConfigApp> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const SizedBox(
-          height: 150,
-        ),
+        const Expanded(flex: 1, child: SizedBox()),
         Expanded(
+          flex: 3,
           child: Row(
             children: [
               const SizedBox(
@@ -388,6 +387,7 @@ class _ConfigPageState extends State<ConfigApp> {
             ],
           ),
         ),
+        const Expanded(flex: 1, child: SizedBox()),
       ],
     );
   }

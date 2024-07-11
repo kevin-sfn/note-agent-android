@@ -93,6 +93,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       await storage.write(
           key: 'store_id', value: loginResponse.storeId.toString());
       await storage.write(
+          key: 'store_name', value: loginResponse.storeName.toString());
+      await storage.write(
           key: 'oauth_access_token', value: loginResponse.access_token);
       await storage.write(
           key: 'oauth_refresh_token', value: loginResponse.refresh_token);
@@ -190,17 +192,16 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            width: 336,
+            width: 400,
             child: Row(
               children: [
-                // Spacer(),
                 Image.asset(
                   'assets/images/login_app_icon.png',
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 6,
                 ),
-                Text(
+                const Text(
                   '안녕하세요. 사장님,\r\n차별화상회 계정으로 로그인하세요.',
                   style: TextStyle(
                       color: Color.fromRGBO(0x00, 0x00, 0xF1, 1),
@@ -210,16 +211,16 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           SizedBox(
-            width: 336,
+            width: 400,
             height: 50,
             child: Row(
               children: [
-                Text('로그인 ID'),
-                SizedBox(
+                const Text('로그인 ID'),
+                const SizedBox(
                   width: 16,
                 ),
                 Expanded(
@@ -243,12 +244,12 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
             height: 8,
           ),
           SizedBox(
-            width: 336,
+            width: 400,
             height: 50,
             child: Row(
               children: [
-                Text('패스워드'),
-                SizedBox(
+                const Text('패스워드'),
+                const SizedBox(
                   width: 16,
                 ),
                 Expanded(
@@ -270,9 +271,9 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
+            margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
             child: SizedBox(
-              width: 336,
+              width: 400,
               height: 50,
               child: Row(
                 children: [
@@ -283,9 +284,9 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                       });
                     },
                     style: ButtonStyle(
-                      padding: MaterialStateProperty.all(EdgeInsets.zero),
+                      padding: WidgetStateProperty.all(EdgeInsets.zero),
                       // 패딩 제거
-                      overlayColor: MaterialStateProperty.all(
+                      overlayColor: WidgetStateProperty.all(
                           Colors.transparent), // 눌렸을 때 투명 색상 설정
                     ),
                     child: Row(
@@ -314,7 +315,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
             ),
           ),
           SizedBox(
-            width: 336,
+            width: 400,
             height: 60,
             child: TextButton(
               onPressed: () async {
@@ -326,21 +327,21 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                 }
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFF0000F1)),
+                backgroundColor: WidgetStateProperty.all(const Color(0xFF0000F1)),
                 // 배경색 설정
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
+                shape: WidgetStateProperty.all(
+                  const RoundedRectangleBorder(
                     borderRadius: BorderRadius.horizontal(
                       left: Radius.circular(50), // 좌측 반원
                       right: Radius.circular(50), // 우측 반원
                     ),
                   ),
                 ),
-                foregroundColor: MaterialStateProperty.all(Colors.white),
+                foregroundColor: WidgetStateProperty.all(Colors.white),
                 // 글자색 설정
-                overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
+                overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                  (Set<WidgetState> states) {
+                    if (states.contains(WidgetState.pressed)) {
                       return Colors.blue.withOpacity(0.5); // 눌렸을 때의 색상 설정
                     }
                     return null; // 다른 상태에서는 기본 색상 사용

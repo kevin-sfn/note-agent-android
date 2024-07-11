@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:intl/date_symbol_data_local.dart';
 import '/common/api_service.dart';
 import '/common/app_util.dart';
 import '/data/do_sales_daily_last_30days.dart';
@@ -138,8 +139,8 @@ class _SalesAppState extends State<SalesApp> {
         _selectedDate.toString().substring(0, 10).replaceAll('-', '');
 
     try {
-      TApiResponse response = await ApiService.getSalesDailyLast30Days(
-          startDate, endDate);
+      TApiResponse response =
+          await ApiService.getSalesDailyLast30Days(startDate, endDate);
       // 조회 성공 시 처리
       if (response.code == 200) {
         chartSalesList.clear();
@@ -195,28 +196,6 @@ class _SalesAppState extends State<SalesApp> {
     _refresh();
   }
 
-  String _getWeekday(DateTime date) {
-    // 요일을 가져와서 해당하는 문자열을 반환합니다.
-    switch (date.weekday) {
-      case 1:
-        return '월';
-      case 2:
-        return '화';
-      case 3:
-        return '수';
-      case 4:
-        return '목';
-      case 5:
-        return '금';
-      case 6:
-        return '토';
-      case 7:
-        return '일';
-      default:
-        return '';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
@@ -229,208 +208,241 @@ class _SalesAppState extends State<SalesApp> {
       //   title: Text('매출'),
       // ),
       body: _isLoading // 로딩 상태에 따라 다른 위젯을 표시
-        ? const Center(child: CircularProgressIndicator()) // 로딩 인디케이터 표시
-        : Column(
-          children: [
-            SizedBox(
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: 220,
-                    height: 50,
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.white),
-                      color: Colors.white,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        const SizedBox(width: 16,),
-                        const Icon(Icons.calendar_month_outlined),
-                        Expanded(
-                          child: Text(
-                                  intl.DateFormat('yyyy년 MM월 dd일').format(_selectedDate),
-                                  textAlign: TextAlign.center, // 텍스트를 가운데 정렬합니다.
-                                ),
+          ? const Center(child: CircularProgressIndicator()) // 로딩 인디케이터 표시
+          : Column(
+              children: [
+                SizedBox(
+                  height: 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        width: 220,
+                        height: 50,
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.white),
+                          color: Colors.white,
                         ),
-                        IconButton(
-                          onPressed: () => _selectDate(context),
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          // child: const Text('날짜 선택'),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Spacer(),
-                  Container(
-                    width: 160,
-                    height: 50,
-                    margin: const EdgeInsets.only(
-                      right: 16.0,
-                      top: 8.0,
-                      bottom: 8.0,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.white),
-                      color: Colors.white,
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        SizedBox(width: 8,),
-                        Icon(
-                          Icons.circle,
-                          color: Color.fromRGBO(0x26, 0x6E, 0xFF, 1.0),
-                          size: 24,
-                        ),
-                        SizedBox(width: 8,),
-                        Text('매장'),
-                        Spacer(),
-                        Icon(
-                          Icons.circle,
-                          color: Color.fromRGBO(0xF8, 0x7F, 0x7F, 1.0),
-                        ),
-                        SizedBox(width: 8,),
-                        Text('배달'),
-                        SizedBox(width: 8,),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white, // 흰색 배경색 설정
-                        borderRadius:
-                        BorderRadius.circular(16.0), // 라운드 테두리 설정
-                      ),
-                      margin: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 8,),
-                          const Text(
-                            '일별 매출 비교',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8,),
-                          Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                              child: CustomPaint(
-                                painter: ChartSalesPainter(chartSalesList, _selectedDate),
-                                child: Container(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            const Icon(Icons.calendar_month_outlined),
+                            Expanded(
+                              child: Text(
+                                intl.DateFormat('yyyy년 MM월 dd일')
+                                    .format(_selectedDate),
+                                textAlign: TextAlign.center, // 텍스트를 가운데 정렬합니다.
                               ),
                             ),
-                          ),
-                        ],
+                            IconButton(
+                              onPressed: () => _selectDate(context),
+                              icon: const Icon(Icons.keyboard_arrow_down),
+                              // child: const Text('날짜 선택'),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-
+                      // Spacer(),
+                      Container(
+                        width: 160,
+                        height: 50,
+                        margin: const EdgeInsets.only(
+                          right: 16.0,
+                          top: 8.0,
+                          bottom: 8.0,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.white),
+                          color: Colors.white,
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Icon(
+                              Icons.circle,
+                              color: Color.fromRGBO(0x26, 0x6E, 0xFF, 1.0),
+                              size: 24,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text('매장'),
+                            Spacer(),
+                            Icon(
+                              Icons.circle,
+                              color: Color.fromRGBO(0xF8, 0x7F, 0x7F, 1.0),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text('배달'),
+                            SizedBox(
+                              width: 8,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white, // 흰색 배경색 설정
-                        borderRadius: BorderRadius.circular(16.0), // 라운드 테두리 설정
-                      ),
-                      margin: const EdgeInsets.all(8.0),
-                      // padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          _buildHeaderRow(),
-                          Expanded(
-                            child: Row(
-                              children: [
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white, // 흰색 배경색 설정
+                            borderRadius:
+                                BorderRadius.circular(16.0), // 라운드 테두리 설정
+                          ),
+                          margin: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              const Text(
+                                '일별 매출 비교',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
                               Expanded(
-                                flex: 30,
-                                child: Column(
-                                  children: [
-                                    _buildListItem(dailySalesList),
-                                  ],
+                                child: Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 16, right: 16, bottom: 16),
+                                  child: CustomPaint(
+                                    painter: ChartSalesPainter(
+                                        chartSalesList, _selectedDate),
+                                    child: Container(),
+                                  ),
                                 ),
                               ),
-                              // const Expanded(flex: 1, child: Placeholder()),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  margin: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 16.0, right: 16.0),
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromRGBO(0x1C, 0x1C, 0x1E, 1.0),
-                                    borderRadius: BorderRadius.circular(24.0), // 라운드 테두리 설정
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.arrow_upward),
-                                        color: Colors.white,
-                                        onPressed: () {
-                                          if (_pageSelected > 0) {
-                                            setState(() {
-                                              _pageSelected--;
-                                              if (kDebugMode) {
-                                                print('_pageSelected: $_pageSelected');
-                                              }
-                                              _refreshSaleDateList();
-                                            });
-                                          }
-                                          if (kDebugMode) {
-                                            print('Navigation - Prev button pressed');
-                                          }
-                                        },
-                                      ),
-                                      Text(
-                                        '${_pageSelected + 1}/$_pageMax',
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(color: Colors.white),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.arrow_downward),
-                                        color:Colors.white, // 아이콘 색상 변경
-                                        onPressed: () {
-                                          if (_pageSelected < (_pageMax - 1)) {
-                                            setState(() {
-                                              _pageSelected++;
-                                              if (kDebugMode) {
-                                                print('_pageSelected: $_pageSelected');
-                                              }
-                                              _refreshSaleDateList();
-                                            });
-                                          }
-                                          if (kDebugMode) {
-                                            print('Navigation - Next button pressed');
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white, // 흰색 배경색 설정
+                            borderRadius:
+                                BorderRadius.circular(16.0), // 라운드 테두리 설정
+                          ),
+                          margin: const EdgeInsets.all(8.0),
+                          // padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              _buildHeaderRow(),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 30,
+                                      child: Column(
+                                        children: [
+                                          _buildListItem(dailySalesList),
+                                        ],
+                                      ),
+                                    ),
+                                    // const Expanded(flex: 1, child: Placeholder()),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 16.0,
+                                            top: 16.0,
+                                            bottom: 16.0,
+                                            right: 16.0),
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromRGBO(
+                                              0x1C, 0x1C, 0x1E, 1.0),
+                                          borderRadius: BorderRadius.circular(
+                                              24.0), // 라운드 테두리 설정
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                  Icons.arrow_upward),
+                                              color: Colors.white,
+                                              onPressed: () {
+                                                if (_pageSelected > 0) {
+                                                  setState(() {
+                                                    _pageSelected--;
+                                                    if (kDebugMode) {
+                                                      print(
+                                                          '_pageSelected: $_pageSelected');
+                                                    }
+                                                    _refreshSaleDateList();
+                                                  });
+                                                }
+                                                if (kDebugMode) {
+                                                  print(
+                                                      'Navigation - Prev button pressed');
+                                                }
+                                              },
+                                            ),
+                                            Text(
+                                              '${_pageSelected + 1}/$_pageMax',
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                  Icons.arrow_downward),
+                                              color: Colors.white, // 아이콘 색상 변경
+                                              onPressed: () {
+                                                if (_pageSelected <
+                                                    (_pageMax - 1)) {
+                                                  setState(() {
+                                                    _pageSelected++;
+                                                    if (kDebugMode) {
+                                                      print(
+                                                          '_pageSelected: $_pageSelected');
+                                                    }
+                                                    _refreshSaleDateList();
+                                                  });
+                                                }
+                                                if (kDebugMode) {
+                                                  print(
+                                                      'Navigation - Next button pressed');
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -462,6 +474,8 @@ Widget _buildHeaderRow() {
         _buildColumnHeader('배달매출'),
         _buildColumnHeader('매장점유율'),
         _buildColumnHeader('배달점유율'),
+        _buildColumnHeader('매장건수'),
+        _buildColumnHeader('배달건수'),
         // _buildColumnHeader(''),
       ],
     ),
@@ -481,6 +495,28 @@ Widget _buildListItem(List<DOSaleDetail> detail) {
 }
 
 Widget _buildRowItem(DOSaleDetail saleDetail) {
+  String getWeekday(DateTime date) {
+    // 요일을 가져와서 해당하는 문자열을 반환합니다.
+    switch (date.weekday) {
+      case 1:
+        return '월';
+      case 2:
+        return '화';
+      case 3:
+        return '수';
+      case 4:
+        return '목';
+      case 5:
+        return '금';
+      case 6:
+        return '토';
+      case 7:
+        return '일';
+      default:
+        return '';
+    }
+  }
+
   Widget buildExpandedText(String text, {TextAlign align = TextAlign.right}) {
     return Expanded(
       flex: 1,
@@ -488,17 +524,25 @@ Widget _buildRowItem(DOSaleDetail saleDetail) {
     );
   }
 
-  return Row(
-    mainAxisSize: MainAxisSize.max,
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      buildExpandedText(saleDetail.saleDate, align: TextAlign.center),
-      buildExpandedText(AppUtil.formatPrice(saleDetail.totalAmount)),
-      buildExpandedText(AppUtil.formatPrice(saleDetail.storeAmount)),
-      buildExpandedText(AppUtil.formatPrice(saleDetail.deliveryAmount)),
-      buildExpandedText('${saleDetail.storeRate}%'),
-      buildExpandedText('${saleDetail.deliveryRate}%'),
-    ],
+  DateTime date = DateTime.parse(saleDetail.saleDate);
+  String formattedDate = '${date.month}/${date.day}(${getWeekday(date)})';
+
+  return Expanded(
+    flex: 1,
+    child: Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        buildExpandedText(formattedDate, align: TextAlign.center),
+        buildExpandedText(AppUtil.formatPrice(saleDetail.totalAmount)),
+        buildExpandedText(AppUtil.formatPrice(saleDetail.storeAmount)),
+        buildExpandedText(AppUtil.formatPrice(saleDetail.deliveryAmount)),
+        buildExpandedText('${saleDetail.storeRate}%'),
+        buildExpandedText('${saleDetail.deliveryRate}%'),
+        buildExpandedText('${saleDetail.storeQuantity}건'),
+        buildExpandedText('${saleDetail.deliveryQuantity}건'),
+      ],
+    ),
   );
 }
 
@@ -675,8 +719,8 @@ class ChartSalesPainter extends CustomPainter {
           paint.color = c == (chartSalesList.length - 1)
               ? const Color.fromRGBO(0x7F, 0x7F, 0xF8, 1.0)
               : const Color.fromRGBO(0xCC, 0xCC, 0xFC, 1.0);
-              // ? const Color.fromRGBO(0x26, 0x6E, 0xFF, 1.0)
-              // : const Color.fromRGBO(0x93, 0xB7, 0xFF, 1.0);
+          // ? const Color.fromRGBO(0x26, 0x6E, 0xFF, 1.0)
+          // : const Color.fromRGBO(0x93, 0xB7, 0xFF, 1.0);
           canvas.drawRect(rect, paint);
         }
 
