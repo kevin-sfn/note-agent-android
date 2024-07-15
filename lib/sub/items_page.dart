@@ -16,12 +16,13 @@ class ItemsApp extends StatefulWidget {
 class _ItemsAppState extends State<ItemsApp> {
   DateTime _selectedDate = DateTime.now();
   final intl.DateFormat _dateFormat = intl.DateFormat('yy.M.d');
+
   // static const storage = FlutterSecureStorage();
   DOItemsAnalysisRank? _itemsAnalysisRank;
   DOItemsAnalysisRankLast30Days? _itemsAnalysisRankLast30Days;
   int _maxItemPercentage = 0;
   bool _isLoading = true;
-  String _modeSelected = "all";
+  String _modeSelected = "ALL";
 
   void _calcMaxItemPercentage() {
     _maxItemPercentage = 0;
@@ -46,16 +47,14 @@ class _ItemsAppState extends State<ItemsApp> {
       lastDate: DateTime(2101),
     );
     if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-        _refresh();
-      });
+      _selectedDate = picked;
+      _refresh();
     }
   }
 
   void _refresh() async {
     if (kDebugMode) {
-      print('_refresh - excute');
+      print('_refresh - execute');
     }
 
     String startDate = _selectedDate
@@ -63,9 +62,8 @@ class _ItemsAppState extends State<ItemsApp> {
         .toString()
         .substring(0, 10)
         .replaceAll('-', '');
-    String endDate =
-        _selectedDate.toString().substring(0, 10).replaceAll('-', '');
-    String type = 'ALL'; // ALL, STORE_SALES, DELIVERY_SALES
+    String endDate = _selectedDate.toString().substring(0, 10).replaceAll('-', '');
+    String type = _modeSelected; // ALL, STORE_SALES, DELIVERY_SALES
 
     try {
       TApiResponse response =
@@ -154,39 +152,44 @@ class _ItemsAppState extends State<ItemsApp> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Expanded(
-                      flex: 1,
-                      child: Container(
-                        width: 220,
-                        height: 45,
-                        margin: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.white),
-                          color: Colors.white,
-                        ),
+                        flex: 1,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            const Icon(Icons.calendar_month_outlined),
-                            Expanded(
-                              child: Text(
-                                intl.DateFormat('yyyy년 MM월 dd일')
-                                    .format(_selectedDate),
-                                textAlign: TextAlign.center,
+                          children: [
+                            Container(
+                              width: 220,
+                              height: 45,
+                              margin: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(color: Colors.white),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  const Icon(Icons.calendar_month_outlined),
+                                  Expanded(
+                                    child: Text(
+                                      intl.DateFormat('yyyy년 MM월 dd일')
+                                          .format(_selectedDate),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () => _selectDate(context),
+                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                    // child: const Text('날짜 선택'),
+                                  ),
+                                ],
                               ),
                             ),
-                            IconButton(
-                              onPressed: () => _selectDate(context),
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              // child: const Text('날짜 선택'),
-                            ),
+                            const Spacer(),
                           ],
-                        ),
-                      ),
-                    ),
+                        )),
                     const Expanded(
                       flex: 2,
                       child: SizedBox(),
@@ -213,7 +216,7 @@ class _ItemsAppState extends State<ItemsApp> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           // border: Border.all(color: Colors.white),
-                          color: Color.fromRGBO(237, 238, 252, 1.0),
+                          color: const Color.fromRGBO(237, 238, 252, 1.0),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -221,23 +224,25 @@ class _ItemsAppState extends State<ItemsApp> {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                margin: EdgeInsets.only(top: 1, bottom: 1,),
+                                margin: const EdgeInsets.only(
+                                  top: 1,
+                                  bottom: 1,
+                                ),
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(16.0),
                                     bottomLeft: Radius.circular(16.0),
                                   ),
                                   // border: Border.all(color: Colors.white),
-                                  color: (_modeSelected == "all"
+                                  color: (_modeSelected == "ALL"
                                       ? const Color.fromRGBO(0, 0, 0xF1, 1.0)
                                       : Colors.white),
                                 ),
                                 child: Center(
                                   child: TextButton(
                                     onPressed: () {
-                                      setState(() {
-                                        _modeSelected = "all";
-                                      });
+                                      _modeSelected = "ALL";
+                                      _refresh();
                                     },
                                     child: Row(
                                       children: [
@@ -247,11 +252,13 @@ class _ItemsAppState extends State<ItemsApp> {
                                               0x7F, 0x7F, 0xF8, 1.0),
                                           size: 24,
                                         ),
-                                        SizedBox(width: 8,),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
                                         Text(
                                           '전체',
                                           style: TextStyle(
-                                            color: (_modeSelected == "all"
+                                            color: (_modeSelected == "ALL"
                                                 ? Colors.white
                                                 : Colors.black),
                                             fontSize: 16,
@@ -267,17 +274,18 @@ class _ItemsAppState extends State<ItemsApp> {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                margin: EdgeInsets.only(left: 1,),
+                                margin: const EdgeInsets.only(
+                                  left: 1,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: (_modeSelected == "dine-in"
+                                  color: (_modeSelected == "STORE_SALES"
                                       ? const Color.fromRGBO(0, 0, 0xF1, 1.0)
                                       : Colors.white),
                                 ),
                                 child: TextButton(
                                   onPressed: () {
-                                    setState(() {
-                                      _modeSelected = "dine-in";
-                                    });
+                                    _modeSelected = "STORE_SALES";
+                                    _refresh();
                                   },
                                   child: Row(
                                     children: [
@@ -287,11 +295,13 @@ class _ItemsAppState extends State<ItemsApp> {
                                             0x14, 0xB8, 0xA6, 1.0),
                                         size: 24,
                                       ),
-                                      SizedBox(width: 8,),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
                                       Text(
                                         '매장',
                                         style: TextStyle(
-                                          color: (_modeSelected == "dine-in"
+                                          color: (_modeSelected == "STORE_SALES"
                                               ? Colors.white
                                               : Colors.black),
                                           fontSize: 16,
@@ -305,21 +315,22 @@ class _ItemsAppState extends State<ItemsApp> {
                             Expanded(
                               flex: 1,
                               child: Container(
-                                margin: EdgeInsets.only(left: 1,),
+                                margin: const EdgeInsets.only(
+                                  left: 1,
+                                ),
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(16.0),
                                     bottomRight: Radius.circular(16.0),
                                   ),
-                                  color: (_modeSelected == "delivery"
+                                  color: (_modeSelected == "DELIVERY_SALES"
                                       ? const Color.fromRGBO(0, 0, 0xF1, 1.0)
                                       : Colors.white),
                                 ),
                                 child: TextButton(
                                   onPressed: () {
-                                    setState(() {
-                                      _modeSelected = "delivery";
-                                    });
+                                    _modeSelected = "DELIVERY_SALES";
+                                    _refresh();
                                   },
                                   child: Row(
                                     children: [
@@ -329,11 +340,13 @@ class _ItemsAppState extends State<ItemsApp> {
                                             0xFF, 0x6E, 0x26, 1.0),
                                         size: 24,
                                       ),
-                                      const SizedBox(width: 8,),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
                                       Text(
                                         '배달',
                                         style: TextStyle(
-                                          color: (_modeSelected == "delivery"
+                                          color: (_modeSelected == "DELIVERY_SALES"
                                               ? Colors.white
                                               : Colors.black),
                                           fontSize: 16,
@@ -356,7 +369,8 @@ class _ItemsAppState extends State<ItemsApp> {
                       Expanded(
                         flex: 3,
                         child: Container(
-                          margin: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
+                          margin: const EdgeInsets.only(
+                              left: 8.0, right: 8.0, bottom: 16.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(color: Colors.white),
@@ -377,7 +391,7 @@ class _ItemsAppState extends State<ItemsApp> {
                                         const Text(
                                           '오늘 메뉴 총 매출',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 16,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
@@ -452,7 +466,8 @@ class _ItemsAppState extends State<ItemsApp> {
                         flex: 1,
                         child: Container(
                           padding: const EdgeInsets.only(left: 8, top: 8),
-                          margin: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
+                          margin: const EdgeInsets.only(
+                              left: 8.0, right: 8.0, bottom: 16.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(color: Colors.white),
@@ -465,7 +480,7 @@ class _ItemsAppState extends State<ItemsApp> {
                                   Text(
                                     '최근 30일 메뉴별 점유율',
                                     style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text('(건수 기준)'),
@@ -487,14 +502,21 @@ class _ItemsAppState extends State<ItemsApp> {
                                 ),
                               ),
                               if (_itemsAnalysisRankLast30Days != null)
-                                for (int i = 0; i < _itemsAnalysisRankLast30Days!.itemRankList.length; i++)
+                                for (int i = 0;
+                                    i <
+                                        _itemsAnalysisRankLast30Days!
+                                            .itemRankList.length;
+                                    i++)
                                   Expanded(
                                     child: _buildPercentageItem(
-                                      rank: i + 1,
-                                      itemName: _itemsAnalysisRankLast30Days!.itemRankList[i].itemName,
-                                      itemCount: _itemsAnalysisRankLast30Days!.itemRankList[i].quantity,
-                                      percentage: _itemsAnalysisRankLast30Days!.itemRankList[i].rate
-                                    ),
+                                        rank: i + 1,
+                                        itemName: _itemsAnalysisRankLast30Days!
+                                            .itemRankList[i].itemName,
+                                        itemCount: _itemsAnalysisRankLast30Days!
+                                            .itemRankList[i].quantity,
+                                        percentage:
+                                            _itemsAnalysisRankLast30Days!
+                                                .itemRankList[i].rate),
                                   ),
                             ],
                           ),
@@ -556,30 +578,22 @@ class _ItemsAppState extends State<ItemsApp> {
     required int itemCount,
     required int percentage,
   }) {
-    return Container(
-      // padding: const EdgeInsets.only(left: 6.0),
-      // margin: EdgeInsets.all(3.0),
-      // decoration: BoxDecoration(
-      //   border: Border.all(color: Colors.white),
-      //   borderRadius: BorderRadius.circular(10.0),
-      // ),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 15, // 비율에 맞게 설정
-            child: _buildRankWidget(rank),
-          ),
-          const SizedBox(width: 8.0),
-          Expanded(
-            flex: 65, // 비율에 맞게 설정
-            child: _buildProductInfoWidget(itemName, percentage),
-          ),
-          Expanded(
-            flex: 20, // 비율에 맞게 설정
-            child: _buildSalesCountWidget(itemCount),
-          ),
-        ],
-      ),
+    return Row(
+      children: [
+        Expanded(
+          flex: 15, // 비율에 맞게 설정
+          child: _buildRankWidget(rank),
+        ),
+        const SizedBox(width: 8.0),
+        Expanded(
+          flex: 65, // 비율에 맞게 설정
+          child: _buildProductInfoWidget(itemName, percentage),
+        ),
+        Expanded(
+          flex: 20, // 비율에 맞게 설정
+          child: _buildSalesCountWidget(itemCount),
+        ),
+      ],
     );
   }
 
@@ -605,15 +619,20 @@ class _ItemsAppState extends State<ItemsApp> {
     // final double parentWidth = MediaQuery.of(context).size.width * 0.5;
     // final double barWidth = (percentage / 100) * parentWidth;
     final double parentWidth = MediaQuery.of(context).size.width * 0.110;
-    final double barWidth = parentWidth.toDouble() * (percentage.toDouble()/_maxItemPercentage.toDouble());
+    final double barWidth = parentWidth.toDouble() *
+        (percentage.toDouble() / _maxItemPercentage.toDouble());
     if (kDebugMode) {
-      print('_buildProductInfoWidget - parentWidth: $parentWidth, percentage: $percentage, barWidth: $barWidth');
+      print(
+          '_buildProductInfoWidget - parentWidth: $parentWidth, percentage: $percentage, barWidth: $barWidth');
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(itemName, style: TextStyle(fontSize: 11),),
+        Text(
+          itemName,
+          style: const TextStyle(fontSize: 11),
+        ),
         // SizedBox(height: 5.0),
         Row(
           children: [
@@ -628,8 +647,9 @@ class _ItemsAppState extends State<ItemsApp> {
             const SizedBox(width: 5.0),
             Text(
               '${percentage.toString()}%',
-              style:
-                  const TextStyle(color: Color.fromRGBO(0x7F, 0x7F, 0xF8, 1.0), ),
+              style: const TextStyle(
+                color: Color.fromRGBO(0x7F, 0x7F, 0xF8, 1.0),
+              ),
             ),
           ],
         ),

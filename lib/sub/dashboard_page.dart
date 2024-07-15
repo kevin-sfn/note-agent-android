@@ -364,7 +364,7 @@ class _DashboardAppState extends State<DashboardApp> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       const Text('오늘 입금 예정',
-                                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                       ),
                                       Text('${dashboardSalesPayment.depositCount}건',
                                         style: const TextStyle(fontSize: 14.0, color: Colors.grey),
@@ -439,7 +439,7 @@ class _DashboardAppState extends State<DashboardApp> {
                                       const SizedBox(width: 8.0),
                                       Text(
                                         intl.DateFormat('yyyy년 M월').format(_focusedDay),
-                                        style: const TextStyle(fontSize: 18.0),
+                                        style: const TextStyle(fontSize: 16.0),
                                       ),
                                       const SizedBox(width: 8.0),
                                       IconButton( // 다음 이동 버튼
@@ -454,12 +454,12 @@ class _DashboardAppState extends State<DashboardApp> {
                                       const Spacer(),
                                       Text(
                                         '${_focusedDay.month}월 평균 매출',
-                                        style: const TextStyle(fontSize: 18.0),
+                                        style: const TextStyle(fontSize: 16.0),
                                       ),
                                       const SizedBox(width: 8.0),
                                       Text(
                                         AppUtil.formatPrice(_totalCount > 0 ? (_totalSalesAmount ~/ _totalCount).toInt() : 0),
-                                        style: const TextStyle(fontSize: 18.0),
+                                        style: const TextStyle(fontSize: 16.0),
                                       ),
                                     ],
                                   ),
@@ -503,7 +503,7 @@ class _DashboardAppState extends State<DashboardApp> {
             children: [
               const Text(
                 '어제 전체 매출',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text('${dashboardSalesPayment.totalCount}건'),
               // Text('0건'),
@@ -564,7 +564,7 @@ class _DashboardAppState extends State<DashboardApp> {
             children: [
               Text(
                 name,
-                style: const TextStyle(fontSize: 18.0),
+                style: const TextStyle(fontSize: 16.0),
               ),
               Text(
                 '$quantity건',
@@ -575,7 +575,7 @@ class _DashboardAppState extends State<DashboardApp> {
           const Spacer(), // 텍스트를 우측 끝으로 밀어냄
           Text(
             AppUtil.formatPrice(amount),
-            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
           ),
         ],
       ),

@@ -315,7 +315,7 @@ class _SalesAppState extends State<SalesApp> {
                               const Text(
                                 '일별 매출 비교',
                                 style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(
                                 height: 8,
