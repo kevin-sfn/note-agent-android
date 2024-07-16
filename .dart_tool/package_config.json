@@ -68,6 +68,18 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "flutter_localization",
+      "rootUri": "file:///Users/kj.shim/.pub-cache/hosted/pub.dev/flutter_localization-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_localizations",
+      "rootUri": "file:///Users/kj.shim/development/flutter/packages/flutter_localizations",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
       "name": "flutter_riverpod",
       "rootUri": "file:///Users/kj.shim/.pub-cache/hosted/pub.dev/flutter_riverpod-2.5.1",
       "packageUri": "lib/",
@@ -446,7 +458,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-07-15T04:31:22.168899Z",
+  "generated": "2024-07-16T02:09:48.507667Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///Users/kj.shim/development/flutter",

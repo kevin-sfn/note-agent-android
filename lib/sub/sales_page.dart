@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:intl/date_symbol_data_local.dart';
 import '/common/api_service.dart';
 import '/common/app_util.dart';
 import '/data/do_sales_daily_last_30days.dart';
@@ -745,18 +744,6 @@ class ChartSalesPainter extends CustomPainter {
         }
       }
     }
-  }
-
-  void _drawNodes(Canvas canvas) {
-    // var paint = Paint()
-    //   ..style = PaintingStyle.fill
-    //   ..color = Colors.amber
-    //   ..isAntiAlias = true;
-    //
-    // const textStyle = TextStyle(
-    //   color: Colors.black,
-    //   fontSize: 18,
-    // );
   }
 
   void _drawText(Canvas canvas, centerX, centerY, text, style) {

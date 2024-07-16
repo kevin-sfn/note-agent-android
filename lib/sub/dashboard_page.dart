@@ -94,7 +94,6 @@ class _DashboardAppState extends State<DashboardApp> {
     return totalSalesAmount;
   }
 
-
   void _refresh(BuildContext context) async {
     // String salesDate = '20240415';
     String salesDate =
@@ -439,7 +438,7 @@ class _DashboardAppState extends State<DashboardApp> {
                                       const SizedBox(width: 8.0),
                                       Text(
                                         intl.DateFormat('yyyy년 M월').format(_focusedDay),
-                                        style: const TextStyle(fontSize: 16.0),
+                                        style: const TextStyle(fontSize: 14.0),
                                       ),
                                       const SizedBox(width: 8.0),
                                       IconButton( // 다음 이동 버튼
@@ -454,12 +453,12 @@ class _DashboardAppState extends State<DashboardApp> {
                                       const Spacer(),
                                       Text(
                                         '${_focusedDay.month}월 평균 매출',
-                                        style: const TextStyle(fontSize: 16.0),
+                                        style: const TextStyle(fontSize: 14.0),
                                       ),
                                       const SizedBox(width: 8.0),
                                       Text(
                                         AppUtil.formatPrice(_totalCount > 0 ? (_totalSalesAmount ~/ _totalCount).toInt() : 0),
-                                        style: const TextStyle(fontSize: 16.0),
+                                        style: const TextStyle(fontSize: 14.0),
                                       ),
                                     ],
                                   ),
@@ -808,18 +807,6 @@ class ChartPainter extends CustomPainter {
     }
   }
 
-  void _drawNodes(Canvas canvas) {
-    // var paint = Paint()
-    //   ..style = PaintingStyle.fill
-    //   ..color = Colors.amber
-    //   ..isAntiAlias = true;
-    //
-    // const textStyle = TextStyle(
-    //   color: Colors.black,
-    //   fontSize: 18,
-    // );
-  }
-
   void _drawText(Canvas canvas, centerX, centerY, text, style) {
     final textSpan = TextSpan(
       text: text,
@@ -846,7 +833,6 @@ class ChartPainter extends CustomPainter {
 
     _drawBackground(canvas);
     _drawGrid(canvas);
-    _drawNodes(canvas);
   }
 
   @override
