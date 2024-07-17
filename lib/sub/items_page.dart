@@ -62,7 +62,8 @@ class _ItemsAppState extends State<ItemsApp> {
         .toString()
         .substring(0, 10)
         .replaceAll('-', '');
-    String endDate = _selectedDate.toString().substring(0, 10).replaceAll('-', '');
+    String endDate =
+        _selectedDate.toString().substring(0, 10).replaceAll('-', '');
     String type = _modeSelected; // ALL, STORE_SALES, DELIVERY_SALES
 
     try {
@@ -346,9 +347,10 @@ class _ItemsAppState extends State<ItemsApp> {
                                       Text(
                                         '배달',
                                         style: TextStyle(
-                                          color: (_modeSelected == "DELIVERY_SALES"
-                                              ? Colors.white
-                                              : Colors.black),
+                                          color:
+                                              (_modeSelected == "DELIVERY_SALES"
+                                                  ? Colors.white
+                                                  : Colors.black),
                                           fontSize: 16,
                                         ),
                                       ),
@@ -378,15 +380,17 @@ class _ItemsAppState extends State<ItemsApp> {
                           ),
                           child: Column(
                             children: <Widget>[
-                              Container(
-                                margin: const EdgeInsets.all(8.0),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, top: 16, right: 16, bottom: 6),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      // mainAxisAlignment:
+                                      //     MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         const Text(
                                           '오늘 메뉴 총 매출',
@@ -395,16 +399,22 @@ class _ItemsAppState extends State<ItemsApp> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                            '${_itemsAnalysisRank?.totalQuantity ?? 0}건'),
+                                          '${_itemsAnalysisRank?.totalQuantity ?? 0}건',
+                                          // textAlign: TextAlign.left,
+                                        ),
                                       ],
                                     ),
-                                    Text(
-                                      AppUtil.formatPrice(
-                                          _itemsAnalysisRank?.totalAmount ?? 0),
-                                      style: const TextStyle(
-                                          color: Colors.blueAccent,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold),
+                                    Expanded(
+                                      child: Text(
+                                        AppUtil.formatPrice(
+                                            _itemsAnalysisRank?.totalAmount ??
+                                                0),
+                                        textAlign: TextAlign.right,
+                                        style: const TextStyle(
+                                            color: Colors.blueAccent,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -418,29 +428,33 @@ class _ItemsAppState extends State<ItemsApp> {
                                 child: const Row(
                                   children: [
                                     Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          '순위',
-                                          textAlign: TextAlign.center,
-                                        )),
+                                      flex: 1,
+                                      child: Text(
+                                        '순위',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                     Expanded(
-                                        flex: 8,
-                                        child: Text(
-                                          '상품명',
-                                          textAlign: TextAlign.center,
-                                        )),
+                                      flex: 8,
+                                      child: Text(
+                                        '상품명',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                     Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          '건수',
-                                          textAlign: TextAlign.center,
-                                        )),
+                                      flex: 3,
+                                      child: Text(
+                                        '건수',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                     Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          '매출액',
-                                          textAlign: TextAlign.center,
-                                        )),
+                                      flex: 3,
+                                      child: Text(
+                                        '매출액',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -465,7 +479,7 @@ class _ItemsAppState extends State<ItemsApp> {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          padding: const EdgeInsets.only(left: 8, top: 8),
+                          padding: const EdgeInsets.all(16),
                           margin: const EdgeInsets.only(
                               left: 8.0, right: 8.0, bottom: 16.0),
                           decoration: BoxDecoration(
@@ -536,39 +550,42 @@ class _ItemsAppState extends State<ItemsApp> {
     required int itemCount,
     required int salesAmount,
   }) {
-    return Row(
-      children: [
-        const SizedBox(
-          width: 16,
-        ),
-        Expanded(
-            flex: 1,
-            child: Text(
-              '$rank위',
-              textAlign: TextAlign.center,
-            )),
-        Expanded(
-            flex: 8,
-            child: Text(
-              itemName,
-              textAlign: TextAlign.left,
-            )),
-        Expanded(
-            flex: 3,
-            child: Text(
-              '$itemCount건',
-              textAlign: TextAlign.right,
-            )),
-        Expanded(
-            flex: 3,
-            child: Text(
-              AppUtil.formatPrice(salesAmount),
-              textAlign: TextAlign.right,
-            )),
-        const SizedBox(
-          width: 16,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(right: 16),
+      child: Row(
+        children: [
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+              flex: 1,
+              child: Text(
+                '$rank위',
+                textAlign: TextAlign.center,
+              )),
+          Expanded(
+              flex: 8,
+              child: Text(
+                itemName,
+                textAlign: TextAlign.left,
+              )),
+          Expanded(
+              flex: 3,
+              child: Text(
+                '$itemCount건',
+                textAlign: TextAlign.right,
+              )),
+          Expanded(
+              flex: 3,
+              child: Text(
+                AppUtil.formatPrice(salesAmount),
+                textAlign: TextAlign.right,
+              )),
+          const SizedBox(
+            width: 16,
+          ),
+        ],
+      ),
     );
   }
 
@@ -598,27 +615,28 @@ class _ItemsAppState extends State<ItemsApp> {
   }
 
   Widget _buildRankWidget(int rank) {
-    return Container(
-      padding: const EdgeInsets.only(left: 5.0),
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: Color.fromRGBO(0xF5, 0xF5, 0xF5, 1.0),
-      ),
-      child: Text(
-        '$rank위',
-        style: const TextStyle(
-          fontSize: 12,
-          color: Color.fromRGBO(0, 0, 0xF1, 1.0),
+    return FittedBox(
+      child: Container(
+        padding: const EdgeInsets.all(8.0), // 텍스트와 원의 여백 설정
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Color.fromRGBO(0xF5, 0xF5, 0xF5, 1.0),
         ),
-        textAlign: TextAlign.center,
+        alignment: Alignment.center, // 텍스트를 가운데 정렬
+        child: Text(
+          '$rank위',
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color.fromRGBO(0, 0, 0xF1, 1.0),
+          ),
+          textAlign: TextAlign.center, // 텍스트 가운데 정렬
+        ),
       ),
     );
   }
 
   Widget _buildProductInfoWidget(String itemName, int percentage) {
-    // final double parentWidth = MediaQuery.of(context).size.width * 0.5;
-    // final double barWidth = (percentage / 100) * parentWidth;
-    final double parentWidth = MediaQuery.of(context).size.width * 0.110;
+    final double parentWidth = MediaQuery.of(context).size.width * 0.100;
     final double barWidth = parentWidth.toDouble() *
         (percentage.toDouble() / _maxItemPercentage.toDouble());
     if (kDebugMode) {
@@ -628,6 +646,7 @@ class _ItemsAppState extends State<ItemsApp> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           itemName,

@@ -22,7 +22,10 @@ class _SalesAppState extends State<SalesApp> {
   late int _pageSelected;
   late int _pageMax;
 
+  static const int _initialDayDiff = 29;
+
   DateTime _selectedDate = DateTime.now();
+  DateTime _thirtyDaysAgo = DateTime.now();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -47,9 +50,7 @@ class _SalesAppState extends State<SalesApp> {
     //   });
     // }
 
-    const int initialDayDiff = 29;
-    DateTime thirtyDaysAgo =
-        _selectedDate.subtract(const Duration(days: initialDayDiff));
+    _thirtyDaysAgo = _selectedDate.subtract(const Duration(days: _initialDayDiff));
 
     return details.where((detail) {
       DateTime saleDate = DateTime(
@@ -57,8 +58,8 @@ class _SalesAppState extends State<SalesApp> {
         int.parse(detail.saleDate.substring(4, 6)),
         int.parse(detail.saleDate.substring(6, 8)),
       );
-      return (saleDate.isAfter(thirtyDaysAgo) ||
-              saleDate.isAtSameMomentAs(thirtyDaysAgo)) &&
+      return (saleDate.isAfter(_thirtyDaysAgo) ||
+              saleDate.isAtSameMomentAs(_thirtyDaysAgo)) &&
           (saleDate.isBefore(_selectedDate) ||
               saleDate.isAtSameMomentAs(_selectedDate));
     }).toList();
@@ -128,14 +129,10 @@ class _SalesAppState extends State<SalesApp> {
       print('_refresh - excute');
     }
 
-    String startDate = _selectedDate
-        .subtract(const Duration(days: 29))
-        .toString()
-        .substring(0, 10)
-        .replaceAll('-', '');
+    _thirtyDaysAgo = _selectedDate.subtract(const Duration(days: _initialDayDiff));
 
-    String endDate =
-        _selectedDate.toString().substring(0, 10).replaceAll('-', '');
+    String startDate = _thirtyDaysAgo.toString().substring(0, 10).replaceAll('-', '');
+    String endDate = _selectedDate.toString().substring(0, 10).replaceAll('-', '');
 
     try {
       TApiResponse response =
@@ -308,17 +305,43 @@ class _SalesAppState extends State<SalesApp> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              const Text(
-                                '일별 매출 비교',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 16, top: 16.0, right: 16.0, bottom: 16.0),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '일별 매출 비교',
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          '${intl.DateFormat('M/d(E)', 'ko_KR').format(_thirtyDaysAgo)} ~ ${intl.DateFormat('M/d(E)', 'ko_KR').format(_selectedDate)}',
+                                          style: TextStyle(
+                                              fontSize: 10, ),
+                                        ),
+                                      ],
+                                    ),
+                                    Expanded(child:
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          '최근 30일간 매출 ${AppUtil.formatPrice(_salesDailyLast30Days!.detailSum)}',
+                                          style: const TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          '전월 대비',
+                                          style: TextStyle(
+                                            fontSize: 10, ),
+                                        ),
+                                      ],
+                                    ),),
+                              ],),),
+
                               Expanded(
                                 child: Container(
                                   margin: const EdgeInsets.only(

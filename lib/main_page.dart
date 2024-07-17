@@ -36,6 +36,7 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         // title: const Text('차별화상회'),
+        elevation: 0, // 하단 경계선 제거
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(0.0), // 원하는 높이로 설정
           child: TabBar(
@@ -69,23 +70,37 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
                 text: '설정',
               ),
             ],
-            labelColor: Colors.indigo,
-            indicatorColor: Colors.indigoAccent,
+            labelColor: Colors.white, // 선택된 탭 텍스트 색상
+            unselectedLabelColor: Colors.black, // 선택되지 않은 탭 텍스트 색상
+            labelStyle: TextStyle(fontSize: 16.0), // 선택된 탭 텍스트 폰트 크기
+            unselectedLabelStyle: TextStyle(fontSize: 16.0), // 선택되지 않은 탭 텍스트 폰트 크기
+            // indicatorColor: Colors.indigoAccent,
+            indicator: const BoxDecoration(
+              color: Color.fromRGBO(0, 0, 0xF1, 1.0), // 선택된 탭의 배경색
+              borderRadius: BorderRadius.all(Radius.circular(50)), // 반원 형태
+            ),
             controller: controller,
+            indicatorPadding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), // margin 설정
+            overlayColor: WidgetStateProperty.all(Colors.transparent), // 탭 버튼 터치 효과 제거
           ),
         ),
       ),
-      body: TabBarView(
-        controller: controller,
-        children: const <Widget>[
-          DashboardApp(),
-          SalesApp(),
-          ItemsApp(),
-          DeliveryApp(),
-          SettlementApp(),
-          PurchaseApp(),
-          ConfigApp(),
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.transparent), // TabBarView의 테두리 제거
+        ),
+        child: TabBarView(
+          controller: controller,
+          children: const <Widget>[
+            DashboardApp(),
+            SalesApp(),
+            ItemsApp(),
+            DeliveryApp(),
+            SettlementApp(),
+            PurchaseApp(),
+            ConfigApp(),
+          ],
+        ),
       ),
     );
   }
@@ -95,8 +110,8 @@ class _MainPage extends State<MainPage> with SingleTickerProviderStateMixin {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon),
-          const SizedBox(width: 8),
+          // Icon(icon),
+          // const SizedBox(width: 8),
           Text(text),
         ],
       ),

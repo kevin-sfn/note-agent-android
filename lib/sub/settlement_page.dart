@@ -211,7 +211,8 @@ class _SettlementAppState extends State<SettlementApp> {
                     Container(
                       width: 220,
                       height: 40,
-                      margin: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0),
+                      margin: const EdgeInsets.only(
+                          left: 8.0, right: 8.0, top: 4.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: Colors.white),
@@ -258,43 +259,36 @@ class _SettlementAppState extends State<SettlementApp> {
                           ),
                           child: Column(
                             children: [
-                              if (_settlementAnalysisDeposit != null)
-                                createTransactionWidget(),
-                              const SizedBox(
-                                height: 16,
+                              Expanded(
+                                  flex: 20,
+                                  child: createTransactionWidget()
                               ),
-                              SizedBox(
-                                height: 188,
+                              Expanded(
+                                flex: 35,
                                 child: Column(
                                   children: [
                                     buildListHeaderDelivery(),
                                     if (_settlementAnalysisDeposit != null)
-                                      for (var deposit
-                                          in _settlementAnalysisDeposit!
-                                              .deliveryDepositList)
+                                      for (var deposit in _settlementAnalysisDeposit!.deliveryDepositList)
                                         buildRowItem(
                                             salesCount: deposit.salesCount,
                                             coName: deposit.channelName,
                                             salesAmount: deposit.salesAmount,
                                             costAmount: deposit.feeAmount,
-                                            settlementAmount:
-                                                deposit.depositAmount),
-                                    ],
+                                            settlementAmount: deposit.depositAmount),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              buildListHeaderCard(),
+                          Expanded(flex: 45, child: Column(children: [
+                            buildListHeaderCard(),
                               if (_settlementAnalysisDeposit != null)
-                                for (var deposit in _settlementAnalysisDeposit!
-                                    .cardDepositList)
+                                for (var deposit in _settlementAnalysisDeposit!.cardDepositList)
                                   buildRowItem(
                                       salesCount: deposit.salesCount,
                                       coName: deposit.cardCompanyName,
                                       salesAmount: deposit.salesAmount,
                                       costAmount: deposit.feeAmount,
-                                      settlementAmount: deposit.depositAmount),
+                                      settlementAmount: deposit.depositAmount),],),),
                             ],
                           ),
                         ),
@@ -313,12 +307,10 @@ class _SettlementAppState extends State<SettlementApp> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
-                                height: 30,
-                                margin: const EdgeInsets.only(left: 10.0),
+                              Padding( padding: const EdgeInsets.only(left: 16, top: 8, right: 16),
                                 child: Text(
-                                  intl.DateFormat('yyyy년 MM월')
-                                      .format(_selectedDate),
+                                  intl.DateFormat('yyyy년 MM월',).format(_selectedDate),
+                                  style: const TextStyle(fontSize: 18,),
                                   textAlign: TextAlign.left,
                                 ),
                               ),
@@ -346,23 +338,21 @@ class _SettlementAppState extends State<SettlementApp> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: 32,
+                                      height: 16,
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
-                                        _buildTileItem(
+                                        _buildTileItemCount(
                                           val: _monthlyDeposit!.saleCount,
-                                          valPrev:
-                                              _monthlyDepositPrev!.saleCount,
+                                          valPrev: _monthlyDepositPrev!.saleCount,
                                           amountLabel: '건수',
                                           percentageLabel: '전월 대비',
                                         ),
                                         const SizedBox(
                                           width: 32,
                                         ),
-                                        _buildTileItem(
+                                        _buildTileItemPrice(
                                           amountLabel: '매출액',
                                           percentageLabel: '전월 대비',
                                           val: _monthlyDeposit!.saleAmount,
@@ -372,7 +362,7 @@ class _SettlementAppState extends State<SettlementApp> {
                                         const SizedBox(
                                           width: 32,
                                         ),
-                                        _buildTileItem(
+                                        _buildTileItemPrice(
                                           amountLabel: '비용',
                                           percentageLabel: '전월 대비',
                                           val: _monthlyDeposit!.feeAmount,
@@ -385,7 +375,7 @@ class _SettlementAppState extends State<SettlementApp> {
                                 ),
                               ),
                               const SizedBox(
-                                height: 50,
+                                height: 32,
                               ),
                               Expanded(
                                 child: SfTableCalendar(
@@ -451,40 +441,52 @@ class _SettlementAppState extends State<SettlementApp> {
     int deliveryAmount = _settlementAnalysisDeposit!.deliveryDepositList
         .fold(0, (sum, item) => sum + item.salesAmount);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('$date 총입금 금액'),
-            Text(
-              AppUtil.formatPrice(totalAmount),
-              style: const TextStyle(
-                  color: Color.fromRGBO(0x14, 0xB8, 0xA6, 1.0),
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
-            ),
-            // '${totalAmount.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match match) => '${match[1]},')}원',
-            // ),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-                flex: 5,
-                child: buildTransactionRow(
-                    'assets/images/settlement_delivery.png',
-                    '배달',
-                    deliveryCount,
-                    deliveryAmount)),
-            Expanded(
-                flex: 5,
-                child: buildTransactionRow('assets/images/settlement_card.png',
-                    '카드', cardCount, cardAmount)),
-          ],
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, top: 8, right: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '$date 총입금',
+                style: TextStyle(fontSize: 18),
+              ),
+              Text(
+                AppUtil.formatPrice(totalAmount),
+                style: const TextStyle(
+                    color: Color.fromRGBO(0x14, 0xB8, 0xA6, 1.0),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+              // '${totalAmount.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match match) => '${match[1]},')}원',
+              // ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Expanded(
+                  flex: 5,
+                  child: buildTransactionRow(
+                      'assets/images/settlement_delivery.png',
+                      '배달',
+                      deliveryCount,
+                      deliveryAmount)),
+              Expanded(
+                  flex: 5,
+                  child: buildTransactionRow(
+                      'assets/images/settlement_card.png',
+                      '카드',
+                      cardCount,
+                      cardAmount)),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -572,9 +574,9 @@ class _SettlementAppState extends State<SettlementApp> {
     );
   }
 
-  Widget _buildListItemDelivery() {
-    return Container();
-  }
+  // Widget _buildListItemDelivery() {
+  //   return Container();
+  // }
 
   Widget _buildMonthlyRateText(int val, int valPrev) {
     String labelCaption = "---";
@@ -649,7 +651,7 @@ class _SettlementAppState extends State<SettlementApp> {
     );
   }
 
-  Widget _buildTileItem(
+  Widget _buildTileItemPrice(
       {required int val,
       required int valPrev,
       required String amountLabel,
@@ -659,6 +661,42 @@ class _SettlementAppState extends State<SettlementApp> {
         Text(amountLabel),
         Text(
           AppUtil.formatPrice(val),
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(percentageLabel),
+            const SizedBox(
+              width: 8,
+            ),
+            _buildMonthlyRateText(val, valPrev),
+            // Text(
+            //   '${percentage.toString()}%',
+            //   style: TextStyle(
+            //     color: percentage < 0 ? Colors.blueAccent : Colors.redAccent,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTileItemCount(
+      {required int val,
+      required int valPrev,
+      required String amountLabel,
+      required String percentageLabel}) {
+    return Column(
+      children: <Widget>[
+        Text(amountLabel),
+        Text(
+          '${val.toString()}건',
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,

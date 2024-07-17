@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 // import 'package:flutter/painting.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:note_agent_flutter/data/do_dashboard_sales_payment.dart';
@@ -72,7 +73,8 @@ class _DashboardAppState extends State<DashboardApp> {
     });
   }
 
-  double calculateSalesAmount(DateTime startDate, DateTime endDate, List? calendarDayList) {
+  double calculateSalesAmount(
+      DateTime startDate, DateTime endDate, List? calendarDayList) {
     // Null check for calendarDayList
     if (calendarDayList == null) {
       return 0;
@@ -82,7 +84,8 @@ class _DashboardAppState extends State<DashboardApp> {
 
     for (var item in calendarDayList) {
       DateTime itemDate = DateTime.parse(item.date);
-      if (itemDate.isAfter(startDate.subtract(const Duration(days: 1))) && itemDate.isBefore(endDate)) {
+      if (itemDate.isAfter(startDate.subtract(const Duration(days: 1))) &&
+          itemDate.isBefore(endDate)) {
         // if (kDebugMode) {
         //   print('calculateSalesAmount - itemDate: $itemDate, salesAmount: ${item.salesAmount}');
         // }
@@ -102,14 +105,13 @@ class _DashboardAppState extends State<DashboardApp> {
     // 시작일 계산: 이번 달의 시작일부터 2주 전
     DateTime now = DateTime.now();
     DateTime startDate =
-      DateTime(now.year, now.month, 1).subtract(const Duration(days: 14));
+        DateTime(now.year, now.month, 1).subtract(const Duration(days: 14));
 
     // 종료일 계산: 이번 달의 마지막 날부터 1주 후
-    DateTime endDate =
-      ((now.month < 12)
-          ? DateTime(now.year, now.month + 1, 1)
-          : DateTime(now.year + 1, 1, 1)
-      ).add(const Duration(days: 7));
+    DateTime endDate = ((now.month < 12)
+            ? DateTime(now.year, now.month + 1, 1)
+            : DateTime(now.year + 1, 1, 1))
+        .add(const Duration(days: 7));
 
     // _chartList.clear();
     // calculateTotalAmount();
@@ -143,7 +145,8 @@ class _DashboardAppState extends State<DashboardApp> {
             String date = item['date'].toString();
             double salesAmount = item['salesAmount'].toDouble();
             double depositAmount = item['depositAmount'].toDouble();
-            _calendarDayList.add(CalendarData(date, salesAmount, depositAmount));
+            _calendarDayList
+                .add(CalendarData(date, salesAmount, depositAmount));
           }
 
           calculateTotalAmount();
@@ -166,7 +169,6 @@ class _DashboardAppState extends State<DashboardApp> {
           setState(() {
             _lastScrappingTime = DateTime.parse(data);
           });
-
         }
       }
       setState(() {
@@ -204,20 +206,22 @@ class _DashboardAppState extends State<DashboardApp> {
       DateTime targetDate = date.subtract(Duration(days: i));
       String formattedDate = intl.DateFormat('yyyyMMdd').format(targetDate);
       var calendarData = _calendarDayList.firstWhere(
-            (element) => element.date == formattedDate,
+        (element) => element.date == formattedDate,
         orElse: () => CalendarData(formattedDate, 0, 0),
       );
       if (calendarData != null) {
         _chartList.add(CalendarData(
-          intl.DateFormat('M/d(EEE)').format(targetDate), // M/D(요일) 형식으로 변환
+          intl.DateFormat('M/d(E)', 'ko_KR').format(targetDate),
+          // M/D(요일) 형식으로 변환
           calendarData.salesAmount,
-          calendarData.depositAmount,// 판매액
+          calendarData.depositAmount, // 판매액
         ));
       }
     }
   }
 
-  void onCalendarDaySelected(DateTime selectedDay, DateTime focusedDay) { // 선택된 날짜의 상태를 갱신합니다.
+  void onCalendarDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    // 선택된 날짜의 상태를 갱신합니다.
     initChartList(focusedDay);
     setState(() {
       this.selectedDay = selectedDay;
@@ -227,7 +231,8 @@ class _DashboardAppState extends State<DashboardApp> {
 
   void onCalendarPageChanged(DateTime focusedDay) {
     if (kDebugMode) {
-      print('${DateTime.now()}: _DashboardAppState.onCalendarPageChanged - focusedDay: $focusedDay');
+      print(
+          '${DateTime.now()}: _DashboardAppState.onCalendarPageChanged - focusedDay: $focusedDay');
     }
     setState(() {
       _focusedDay = focusedDay;
@@ -262,7 +267,8 @@ class _DashboardAppState extends State<DashboardApp> {
 
 // D일 H시간 m분 전 형식으로 메시지 생성
     if (daysDifference > 0) {
-      updateMessage = '$daysDifference일 $hoursDifference시간 $minutesDifference분 전';
+      updateMessage =
+          '$daysDifference일 $hoursDifference시간 $minutesDifference분 전';
     } else if (hoursDifference > 0) {
       updateMessage = '$hoursDifference시간 $minutesDifference분 전';
     } else {
@@ -272,222 +278,276 @@ class _DashboardAppState extends State<DashboardApp> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(237, 238, 252, 1.0),
       body: _isLoading // 로딩 상태에 따라 다른 위젯을 표시
-        ? const Center(child: CircularProgressIndicator()) // 로딩 인디케이터 표시
-        : Column(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.all(4.0),
-              child: Row(
-                // 주 축을 양 끝으로 정렬
-                children: [
-                  Text('마지막 업데이트: $updateMessage', style: const TextStyle(fontSize: 16.0,),),
-                  const Spacer(),
-                  Container(
-                    width: 160,
-                    height: 40,
-                    margin: const EdgeInsets.only(left: 8.0, right: 4.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.white),
-                      color: Colors.white,
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(width: 8,),
-                        Icon(
-                          Icons.circle,
-                          color: Color.fromRGBO(0x00, 0x00, 0xF1, 1.0),
-                          size: 24,
+          ? const Center(child: CircularProgressIndicator()) // 로딩 인디케이터 표시
+          : Column(
+              children: <Widget>[
+                Container(
+                  margin: const EdgeInsets.all(4.0),
+                  child: Row(
+                      // 주 축을 양 끝으로 정렬
+                      children: [
+                        Text(
+                          '마지막 업데이트: $updateMessage',
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                          ),
                         ),
-                        SizedBox(width: 6,),
-                        Text('매출'),
-                        Spacer(),
-                        Icon(
-                          Icons.circle,
-                          color: Color.fromRGBO(0x14, 0xB8, 0xA6, 1.0),
-                          size: 24,
-                        ),
-                        SizedBox(width: 6,),
-                        Text('입금'),
-                        SizedBox(width: 8,),
-                      ],
-                    ),
-                  ),
-                ]),
-            ),
-            Expanded(
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 400,
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 5,
-                          child:
+                        const Spacer(),
                         Container(
-                          margin: const EdgeInsets.only(
-                            left: 8.0,
-                            right: 8.0,
-                            bottom: 8.0,
-                          ),
-                          // 마진 설정
+                          width: 160,
+                          height: 40,
+                          margin: const EdgeInsets.only(left: 8.0, right: 4.0),
                           decoration: BoxDecoration(
-                            color: Colors.white, // 배경색
-                            borderRadius: BorderRadius.circular(16.0), // 모서리 라운드 처리
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.white),
+                            color: Colors.white,
                           ),
-                          // height: 420.0,
-                          child: _buildDashboardSalesPayment(
-                              dashboardSalesPayment: dashboardSalesPayment),
-                        ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            margin: const EdgeInsets.only(
-                              left: 8.0,
-                              right: 8.0,
-                              bottom: 16.0,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white, // 배경색
-                              borderRadius: BorderRadius.circular(16.0), // 모서리 라운드 처리
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(16.0),
-                                  // 모든 방향에 동일한 여백 설정
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text('오늘 입금 예정',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                      ),
-                                      Text('${dashboardSalesPayment.depositCount}건',
-                                        style: const TextStyle(fontSize: 14.0, color: Colors.grey),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Text(
-                                  AppUtil.formatPrice(dashboardSalesPayment.depositAmount),
-                                  style: const TextStyle(
-                                      color: Colors.blueAccent,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Icon(
+                                Icons.circle,
+                                color: Color.fromRGBO(0x00, 0x00, 0xF1, 1.0),
+                                size: 24,
+                              ),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Text('매출'),
+                              Spacer(),
+                              Icon(
+                                Icons.circle,
+                                color: Color.fromRGBO(0x14, 0xB8, 0xA6, 1.0),
+                                size: 24,
+                              ),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Text('입금'),
+                              SizedBox(
+                                width: 8,
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 30,
-                          child:
-                        Container(
-                          margin: const EdgeInsets.only(
-                            left: 8.0,
-                            right: 8.0,
-                            bottom: 8.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white, // 배경색
-                            borderRadius: BorderRadius.circular(16.0), // 모서리 라운드 처리
-                          ),
-                          // height: 230.0,
-                          child: Center(
-                            child: _buildDashboardSalesBarChart(data: [],),
-                          ),
-                        ), ),
-                        Expanded(
-                          flex: 55,
-                          child: Container(
-                            margin: const EdgeInsets.only(
-                              left: 8.0,
-                              right: 8.0,
-                              bottom: 16.0,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                                  child: Row(
-                                    children: [
-                                      IconButton( // 이전 이동 버튼
-                                        icon: const Icon(Icons.chevron_left),
-                                        onPressed: () { // 이전 이동 버튼이 눌렸을 때 수행할 동작
-                                          setState(() {
-                                            _focusedDay = DateTime(_focusedDay.year, _focusedDay.month - 1, 1);
-                                            _refresh(context);
-                                          });
-                                        },
-                                      ),
-                                      const SizedBox(width: 8.0),
-                                      Text(
-                                        intl.DateFormat('yyyy년 M월').format(_focusedDay),
-                                        style: const TextStyle(fontSize: 14.0),
-                                      ),
-                                      const SizedBox(width: 8.0),
-                                      IconButton( // 다음 이동 버튼
-                                        icon: const Icon(Icons.chevron_right),
-                                        onPressed: () { // 다음 이동 버튼이 눌렸을 때 수행할 동작
-                                          setState(() {
-                                            _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1, 1);
-                                            _refresh(context);
-                                          });
-                                        },
-                                      ),
-                                      const Spacer(),
-                                      Text(
-                                        '${_focusedDay.month}월 평균 매출',
-                                        style: const TextStyle(fontSize: 14.0),
-                                      ),
-                                      const SizedBox(width: 8.0),
-                                      Text(
-                                        AppUtil.formatPrice(_totalCount > 0 ? (_totalSalesAmount ~/ _totalCount).toInt() : 0),
-                                        style: const TextStyle(fontSize: 14.0),
-                                      ),
-                                    ],
-                                  ),
+                      ]),
+                ),
+                Expanded(
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 400,
+                        child: Column(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 5,
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  left: 8.0,
+                                  right: 8.0,
+                                  bottom: 8.0,
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    margin: const EdgeInsets.only(left: 16, right: 16),
-                                    child: SfTableCalendar(
-                                      calendarDayList: _calendarDayList,
-                                      selectedDay: selectedDay,
-                                      focusedDay: _focusedDay,
-                                      onDaySelected: onCalendarDaySelected,
-                                      onPageChanged: onCalendarPageChanged,
-                                      saleVisible: true,
+                                padding: const EdgeInsets.all(16),
+                                // 마진 설정
+                                decoration: BoxDecoration(
+                                  color: Colors.white, // 배경색
+                                  borderRadius:
+                                      BorderRadius.circular(16.0), // 모서리 라운드 처리
+                                ),
+                                // height: 420.0,
+                                child: _buildDashboardSalesPayment(
+                                    dashboardSalesPayment:
+                                        dashboardSalesPayment),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  left: 8.0,
+                                  right: 8.0,
+                                  bottom: 16.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white, // 배경색
+                                  borderRadius:
+                                      BorderRadius.circular(16.0), // 모서리 라운드 처리
+                                ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(16.0),
+                                      // 모든 방향에 동일한 여백 설정
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text(
+                                            '오늘 입금 예정',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            '${dashboardSalesPayment.depositCount}건',
+                                            style: const TextStyle(
+                                                fontSize: 14.0,
+                                                color: Colors.grey),
+                                          ),
+                                        ],
+                                      ),
                                     ),
+                                    Text(
+                                      AppUtil.formatPrice(
+                                          dashboardSalesPayment.depositAmount),
+                                      style: const TextStyle(
+                                          color: Colors.blueAccent,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 30,
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  left: 8.0,
+                                  right: 8.0,
+                                  bottom: 8.0,
+                                ),
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, top: 16, right: 16, bottom: 3),
+                                decoration: BoxDecoration(
+                                  color: Colors.white, // 배경색
+                                  borderRadius:
+                                      BorderRadius.circular(16.0), // 모서리 라운드 처리
+                                ),
+                                // height: 230.0,
+                                child: Center(
+                                  child: _buildDashboardSalesBarChart(
+                                    data: [],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
+                            Expanded(
+                              flex: 60,
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  left: 8.0,
+                                  right: 8.0,
+                                  bottom: 16.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16.0),
+                                ),
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        right: 16,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          IconButton(
+                                            // 이전 이동 버튼
+                                            icon:
+                                                const Icon(Icons.chevron_left),
+                                            onPressed: () {
+                                              // 이전 이동 버튼이 눌렸을 때 수행할 동작
+                                              setState(() {
+                                                _focusedDay = DateTime(
+                                                    _focusedDay.year,
+                                                    _focusedDay.month - 1,
+                                                    1);
+                                              });
+                                              _refresh(context);
+                                            },
+                                          ),
+                                          // const SizedBox(width: 8.0),
+                                          Text(
+                                            intl.DateFormat('yyyy년 M월')
+                                                .format(_focusedDay),
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          // const SizedBox(width: 8.0),
+                                          IconButton(
+                                            // 다음 이동 버튼
+                                            icon:
+                                                const Icon(Icons.chevron_right),
+                                            onPressed: () {
+                                              // 다음 이동 버튼이 눌렸을 때 수행할 동작
+                                              setState(() {
+                                                _focusedDay = DateTime(
+                                                    _focusedDay.year,
+                                                    _focusedDay.month + 1,
+                                                    1);
+                                              });
+                                              _refresh(context);
+                                            },
+                                          ),
+                                          const Spacer(),
+                                          Text(
+                                            '${_focusedDay.month}월 평균 매출',
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(width: 8.0),
+                                          Text(
+                                            AppUtil.formatPrice(_totalCount > 0
+                                                ? (_totalSalesAmount ~/
+                                                        _totalCount)
+                                                    .toInt()
+                                                : 0),
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 16, right: 16),
+                                        child: SfTableCalendar(
+                                          calendarDayList: _calendarDayList,
+                                          selectedDay: selectedDay,
+                                          focusedDay: _focusedDay,
+                                          onDaySelected: onCalendarDaySelected,
+                                          onPageChanged: onCalendarPageChanged,
+                                          saleVisible: true,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
     );
   }
 
@@ -495,19 +555,16 @@ class _DashboardAppState extends State<DashboardApp> {
       {required DoDashboardSalesPayment dashboardSalesPayment}) {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.all(16.0), // 모든 방향에 동일한 여백 설정
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                '어제 전체 매출',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              Text('${dashboardSalesPayment.totalCount}건'),
-              // Text('0건'),
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              '어제 전체 매출',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Text('${dashboardSalesPayment.totalCount}건'),
+            // Text('0건'),
+          ],
         ),
         Text(
           AppUtil.formatPrice(dashboardSalesPayment.totalAmount),
@@ -555,7 +612,9 @@ class _DashboardAppState extends State<DashboardApp> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Image.asset(imagePath,),
+          Image.asset(
+            imagePath,
+          ),
           const SizedBox(width: 16.0), // 이미지와 텍스트 사이 간격 조절
           // 왼쪽에 텍스트
           Column(
@@ -590,60 +649,75 @@ class _DashboardAppState extends State<DashboardApp> {
     DateTime prevStartDate = startDate.subtract(const Duration(days: 7));
     DateTime prevEndDate = endDate.subtract(const Duration(days: 7));
 
-    double thisWeekSalesAmount = calculateSalesAmount(startDate, endDate, _calendarDayList);
-    double prevWeekSalesAmount = calculateSalesAmount(prevStartDate, prevEndDate, _calendarDayList);
+    double thisWeekSalesAmount =
+        calculateSalesAmount(startDate, endDate, _calendarDayList);
+    double prevWeekSalesAmount =
+        calculateSalesAmount(prevStartDate, prevEndDate, _calendarDayList);
 
-    int percentageChange = ((thisWeekSalesAmount / prevWeekSalesAmount) * 100 - 100).toInt();
-    Color textColor = prevWeekSalesAmount < thisWeekSalesAmount ? Color(0xFF266EFF) : Color(0xFFF10000);
+    int percentageChange =
+        ((thisWeekSalesAmount / prevWeekSalesAmount) * 100 - 100).toInt();
+    // Color textColor = prevWeekSalesAmount < thisWeekSalesAmount
+    //     ? Color(0xFF266EFF)
+    //     : Color(0xFFF10000);
 
-    return SizedBox(
-      height: 400,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 50,
-            child: Row(
-              children: [
-                const SizedBox(width: 16,),
-                Column(
-                  children: [
-                    const Text('최근7일 매출 비교'),
-                    Text('${startDate.month}월 ${startDate.day}일 (${_getWeekday(startDate)}) ~ ${endDate.month}월 ${endDate.day}일 (${_getWeekday(endDate)})'),
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  children: [
-                    Text('이번 주 총 ${AppUtil.formatPrice(thisWeekSalesAmount.toInt())}'),
-                    Text(
-                      '전주 대비 $percentageChange%',
-                      style: TextStyle(color: textColor),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 50,
+          child: Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '최근7일 매출 비교',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '${startDate.month}월 ${startDate.day}일 (${_getWeekday(startDate)}) ~ ${endDate.month}월 ${endDate.day}일 (${_getWeekday(endDate)})',
+                    style: const TextStyle(
+                      fontSize: 12,
                     ),
-                  ],
-                ),
-                const SizedBox(width: 16,),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.all(16.0),
-              child: CustomPaint(
-                painter: ChartPainter(_chartList),
-                child: Container(),
+                  ),
+                ],
               ),
+              const Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    '이번 주 총 ${AppUtil.formatPrice(thisWeekSalesAmount.toInt())}',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '전주 대비 $percentageChange%',
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Container(
+            margin:
+                const EdgeInsets.only(left: 3, top: 3, right: 3, bottom: 10.0),
+            child: CustomPaint(
+              painter: ChartPainter(_chartList),
+              child: Container(),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   String _getWeekday(DateTime date) {
     const weekdays = ['월', '화', '수', '목', '금', '토', '일'];
     return weekdays[date.weekday - 1];
-  }}
+  }
+}
 
 class ChartPainter extends CustomPainter {
   var rowCount = 10;
@@ -773,25 +847,23 @@ class ChartPainter extends CustomPainter {
         double rectHeight = 0;
         Rect rect;
         if (chartList[c].salesAmount != 0) {
-          rectHeight = ((_height - bottomOffset) * chartList[c].salesAmount) / gridTop;
+          rectHeight =
+              ((_height - bottomOffset) * chartList[c].salesAmount) / gridTop;
 
           // Create a rectangle
           rect = Rect.fromLTWH(
-              x, (_height - bottomOffset) - rectHeight,
-              16, rectHeight);
+              x, (_height - bottomOffset) - rectHeight, 16, rectHeight);
 
           // Draw the rectangle on the canvas
           paint.color = const Color.fromRGBO(0x00, 0x00, 0xF1, 1.0);
           canvas.drawRect(rect, paint);
         }
         if (chartList[c].depositAmount != 0) {
-          rectHeight = ((_height - bottomOffset) * chartList[c].depositAmount) / gridTop;
+          rectHeight =
+              ((_height - bottomOffset) * chartList[c].depositAmount) / gridTop;
           // Create a rectangle
           rect = Rect.fromLTWH(
-              x + 18,
-              (_height - bottomOffset) - rectHeight,
-              16,
-              rectHeight);
+              x + 18, (_height - bottomOffset) - rectHeight, 16, rectHeight);
 
           // Draw the rectangle on the canvas
           paint.color = Color.fromRGBO(0x14, 0xB8, 0xA6, 1.0);
