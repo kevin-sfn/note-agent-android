@@ -38,14 +38,12 @@ class _DeliveryAppState extends State<DeliveryApp> {
       print('_refresh - excute');
     }
 
-    String salesDate = _selectedDate
-        .toString()
-        .substring(0, 10)
-        .replaceAll('-', '');
+    String salesDate =
+        _selectedDate.toString().substring(0, 10).replaceAll('-', '');
 
     try {
-      TApiResponse response = await ApiService.getAnalysisDeliverySales(
-          salesDate, salesDate);
+      TApiResponse response =
+          await ApiService.getAnalysisDeliverySales(salesDate, salesDate);
       // 조회 성공 시 처리
       if (response.code == 200) {
         if (_deliveryAnalysisSales != null) {
@@ -97,162 +95,265 @@ class _DeliveryAppState extends State<DeliveryApp> {
       body: _isLoading // 로딩 상태에 따라 다른 위젯을 표시
           ? const Center(child: CircularProgressIndicator()) // 로딩 인디케이터 표시
           : Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                width: 220,
-                height: 50,
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.white),
-                  color: Colors.white,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Row(
                   children: <Widget>[
-                    const SizedBox(width: 16,),
-                    const Icon(Icons.calendar_month_outlined),
-                    Expanded(
-                      child: Text(intl.DateFormat('yyyy년 MM월 dd일').format(_selectedDate),textAlign: TextAlign.center,),
+                    Container(
+                      width: 220,
+                      height: 40,
+                      margin: const EdgeInsets.only(
+                        left: 8.0,
+                        top: 8.0,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.white),
+                        color: Colors.white,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          const Icon(Icons.calendar_month_outlined),
+                          Expanded(
+                            child: Text(
+                              intl.DateFormat('yyyy년 MM월 dd일')
+                                  .format(_selectedDate),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => _selectDate(context),
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            // child: const Text('날짜 선택'),
+                          ),
+                        ],
+                      ),
                     ),
-                    IconButton(
-                      onPressed: () => _selectDate(context),
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      // child: const Text('날짜 선택'),
+                    const Spacer(),
+                    const Icon(
+                      Icons.circle,
+                      color: Colors.blueAccent,
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    const Text('매장'),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    const Icon(
+                      Icons.circle,
+                      color: Colors.orangeAccent,
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    const Text('배달'),
+                    const SizedBox(
+                      width: 16,
                     ),
                   ],
                 ),
-              ),
-              const Spacer(),
-              const Icon(
-                Icons.circle,
-                color: Colors.blueAccent,
-              ),
-              const SizedBox(width: 4,),
-              const Text('매장'),
-              const SizedBox(width: 16,),
-              const Icon(
-                Icons.circle,
-                color: Colors.orangeAccent,
-              ),
-              const SizedBox(width: 4,),
-              const Text('배달'),
-              const SizedBox(width: 16,),
-            ],
-          ),
-          Expanded(
-            child: Container(
-              height: 200,
-              margin: const EdgeInsets.all(10.0),
-              // color: Colors.white,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white),
-                color: Colors.white,
-              ),
-              child: Column(
-                children: <Widget>[
-                  Center(
+                Expanded(
+                  child: Container(
+                    // height: 200,
+                    margin: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.only(
+                      top: 32,
+                      left: 16,
+                      right: 16,
+                    ),
+                    // color: Colors.white,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.white),
+                      color: Colors.white,
+                    ),
                     child: Column(
                       children: <Widget>[
-                        const Text('총 배달 건수'),
-                        Text(
-                          '${_deliveryAnalysisSales?.totalSalesCount ?? 0}건',
-                          style: const TextStyle(
-                              color: Colors.orangeAccent,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
+                        Center(
+                          child: Column(
+                            children: <Widget>[
+                              const Text('총 배달 건수'),
+                              Text(
+                                '${_deliveryAnalysisSales?.totalSalesCount ?? 0}건',
+                                style: const TextStyle(
+                                    color: Colors.orangeAccent,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  const Text('전월 일평균 대비'),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    '${_deliveryAnalysisSales?.rateOfSalesCount ?? 0}%',
+                                    style: const TextStyle(
+                                      color: Colors.blueAccent,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 24,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            const Text('전월 일평균 대비'),
-                            Text(
-                              '${_deliveryAnalysisSales?.rateOfSalesCount ?? 0}%',
-                              style: const TextStyle(
-                                color: Colors.blueAccent,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            _buildTileItem(
+                              amount:
+                                  _deliveryAnalysisSales?.totalSalesAmount ?? 0,
+                              percentage: _deliveryAnalysisSales
+                                      ?.rateOfSalesAmount
+                                      .toInt() ??
+                                  0,
+                              amountLabel: '총 매출 금액',
+                              percentageLabel: '전월 일평균 대비',
+                            ),
+                            const SizedBox(
+                              width: 32,
+                            ),
+                            _buildTileItem(
+                              amountLabel: '비용',
+                              amount: _deliveryAnalysisSales
+                                      ?.totalDeliveryFeeAmount ??
+                                  0,
+                              percentageLabel: '전월 일평균 대비',
+                              percentage: _deliveryAnalysisSales
+                                      ?.rateOfDeliveryFeeAmount
+                                      .toInt() ??
+                                  0,
+                            ),
+                            const SizedBox(
+                              width: 32,
+                            ),
+                            _buildTileItem(
+                              amountLabel: '정산금액',
+                              amount:
+                                  _deliveryAnalysisSales?.totalDepositAmount ??
+                                      0,
+                              percentageLabel: '전월 일평균 대비',
+                              percentage: _deliveryAnalysisSales
+                                      ?.rateOfDepositAmount
+                                      .toInt() ??
+                                  0,
                             ),
                           ],
                         ),
+                        Container(
+                          height: 40,
+                          margin: const EdgeInsets.only(
+                            top: 16.0,
+                            bottom: 8,
+                          ),
+                          // color: Colors.white,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: const Color.fromRGBO(237, 238, 252, 1.0)),
+                            color: const Color.fromRGBO(237, 238, 252, 1.0),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  '순위',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  '배달사',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  '건수',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  '매출액',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  '비용',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  '정산금액',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  '전월 일평균 매출액',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  '전월 일평균 대비',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (_deliveryAnalysisSales != null)
+                          for (int i = 0;
+                              i <
+                                  _deliveryAnalysisSales!
+                                      .deliverySalesList!.length;
+                              i++)
+                            _buildRowItem(
+                              rank: i + 1,
+                              channelTypeName: _deliveryAnalysisSales!
+                                  .deliverySalesList![i].channelTypeName,
+                              salesCount: _deliveryAnalysisSales!
+                                  .deliverySalesList![i].salesCount,
+                              salesAmount: _deliveryAnalysisSales!
+                                  .deliverySalesList![i].salesAmount,
+                              deliveryFeeAmount: _deliveryAnalysisSales!
+                                  .deliverySalesList![i].deliveryFeeAmount,
+                              depositAmount: _deliveryAnalysisSales!
+                                  .deliverySalesList![i].depositAmount,
+                              lastMonthSalesAverage: _deliveryAnalysisSales!
+                                  .deliverySalesList![i].lastMonthSales.average,
+                              lastMonthSalesRate: _deliveryAnalysisSales!
+                                  .deliverySalesList![i].lastMonthSales.rate,
+                            ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      _buildTileItem(
-                        amount: _deliveryAnalysisSales?.totalSalesAmount ?? 0,
-                        percentage: _deliveryAnalysisSales?.rateOfSalesAmount.toInt() ?? 0,
-                        amountLabel: '총 매출 금액',
-                        percentageLabel: '전월 일평균 대비',
-                      ),
-                      const SizedBox(width: 32,),
-                      _buildTileItem(
-                        amountLabel: '비용',
-                        amount: _deliveryAnalysisSales?.totalDeliveryFeeAmount ?? 0,
-                        percentageLabel: '전월 일평균 대비',
-                        percentage: _deliveryAnalysisSales?.rateOfDeliveryFeeAmount.toInt() ?? 0,
-                      ),
-                      const SizedBox(
-                        width: 32,
-                      ),
-                      _buildTileItem(
-                        amountLabel: '정산금액',
-                        amount: _deliveryAnalysisSales?.totalDepositAmount ?? 0,
-                        percentageLabel: '전월 일평균 대비',
-                        percentage: _deliveryAnalysisSales?.rateOfDepositAmount.toInt() ?? 0,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    height: 40,
-                    margin: const EdgeInsets.all(16.0),
-                    // color: Colors.white,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: Colors.lightBlueAccent),
-                      color: Colors.lightBlueAccent,
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(flex: 1, child: Text('순위', textAlign: TextAlign.center,),),
-                        Expanded(flex: 1, child: Text('배달사', textAlign: TextAlign.center,),),
-                        Expanded(flex: 1, child: Text('건수', textAlign: TextAlign.center,),),
-                        Expanded(flex: 1, child: Text('매출액', textAlign: TextAlign.center,),),
-                        Expanded(flex: 1, child: Text('비용', textAlign: TextAlign.center,),),
-                        Expanded(flex: 1, child: Text('정산금액', textAlign: TextAlign.center,),),
-                        Expanded(flex: 1, child: Text('전월 일평균 매출액', textAlign: TextAlign.center,),),
-                        Expanded(flex: 1, child: Text('전월 일평균 대비', textAlign: TextAlign.center,),),
-                      ],
-                    ),
-                  ),
-                  if (_deliveryAnalysisSales != null)
-                    for (int i = 0; i < _deliveryAnalysisSales!.deliverySalesList!.length; i++)
-                      _buildRowItem(
-                        rank: i + 1,
-                        channelTypeName: _deliveryAnalysisSales!.deliverySalesList![i].channelTypeName,
-                        salesCount: _deliveryAnalysisSales!.deliverySalesList![i].salesCount,
-                        salesAmount: _deliveryAnalysisSales!.deliverySalesList![i].salesAmount,
-                        deliveryFeeAmount: _deliveryAnalysisSales!.deliverySalesList![i].deliveryFeeAmount,
-                        depositAmount: _deliveryAnalysisSales!.deliverySalesList![i].depositAmount,
-                        lastMonthSalesAverage: _deliveryAnalysisSales!.deliverySalesList![i].lastMonthSales.average,
-                        lastMonthSalesRate: _deliveryAnalysisSales!.deliverySalesList![i].lastMonthSales.rate,
-                      ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -271,9 +372,9 @@ class _DeliveryAppState extends State<DeliveryApp> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        const SizedBox(
-          width: 16,
-        ),
+        // const SizedBox(
+        //   width: 16,
+        // ),
         Expanded(
           flex: 1,
           child: Text(
@@ -282,7 +383,7 @@ class _DeliveryAppState extends State<DeliveryApp> {
           ),
         ),
         Expanded(
-          flex: 1,
+          flex: 3,
           child: SizedBox(
             width: 118,
             child: Text(
@@ -299,35 +400,35 @@ class _DeliveryAppState extends State<DeliveryApp> {
           ),
         ),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Text(
             formatter.format(salesAmount),
             textAlign: TextAlign.right, // 매출액은 오른쪽 정렬
           ),
         ),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Text(
             formatter.format(deliveryFeeAmount),
             textAlign: TextAlign.right, // 비용은 오른쪽 정렬
           ),
         ),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Text(
             formatter.format(depositAmount),
             textAlign: TextAlign.right, // 정산금액은 오른쪽 정렬
           ),
         ),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Text(
             formatter.format(lastMonthSalesAverage),
             textAlign: TextAlign.right, // 전월 일평균 매출액은 오른쪽 정렬
           ),
         ),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Text(
             '${lastMonthSalesRate.toString()}%',
             textAlign: TextAlign.right, // 전월 일평균 대비는 오른쪽 정렬
@@ -336,9 +437,9 @@ class _DeliveryAppState extends State<DeliveryApp> {
             ),
           ),
         ),
-        const SizedBox(
-          width: 16,
-        ),
+        // const SizedBox(
+        //   width: 16,
+        // ),
       ],
     );
   }
@@ -356,7 +457,7 @@ class _DeliveryAppState extends State<DeliveryApp> {
         Text(
           formatter.format(amount),
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),

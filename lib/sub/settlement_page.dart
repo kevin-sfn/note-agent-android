@@ -212,7 +212,7 @@ class _SettlementAppState extends State<SettlementApp> {
                       width: 220,
                       height: 40,
                       margin: const EdgeInsets.only(
-                          left: 8.0, right: 8.0, top: 4.0),
+                          left: 8.0, right: 8.0, top: 8.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: Colors.white),

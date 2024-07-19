@@ -208,14 +208,13 @@ class _SalesAppState extends State<SalesApp> {
           : Column(
               children: [
                 SizedBox(
-                  height: 60,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         width: 220,
-                        height: 50,
-                        margin: const EdgeInsets.all(8.0),
+                        height: 40,
+                        margin: const EdgeInsets.only(left: 8.0, top: 8.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(color: Colors.white),
@@ -246,17 +245,17 @@ class _SalesAppState extends State<SalesApp> {
                       // Spacer(),
                       Container(
                         width: 160,
-                        height: 50,
+                        height: 40,
                         margin: const EdgeInsets.only(
-                          right: 16.0,
+                          right: 8.0,
                           top: 8.0,
-                          bottom: 8.0,
+                          // bottom: 8.0,
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.white),
-                          color: Colors.white,
-                        ),
+                        // decoration: BoxDecoration(
+                        //   borderRadius: BorderRadius.circular(16),
+                        //   border: Border.all(color: Colors.white),
+                        //   color: Colors.white,
+                        // ),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[

@@ -158,16 +158,18 @@ class _ItemsAppState extends State<ItemsApp> {
                           children: [
                             Container(
                               width: 220,
-                              height: 45,
-                              margin: const EdgeInsets.all(8.0),
+                              height: 40,
+                              margin: const EdgeInsets.only(
+                                left: 8.0,
+                                // top: 8.0,
+                              ),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(12),
                                 border: Border.all(color: Colors.white),
                                 color: Colors.white,
                               ),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   const SizedBox(
                                     width: 16,
@@ -188,7 +190,7 @@ class _ItemsAppState extends State<ItemsApp> {
                                 ],
                               ),
                             ),
-                            const Spacer(),
+                            // const Spacer(),
                           ],
                         )),
                     const Expanded(
@@ -212,10 +214,10 @@ class _ItemsAppState extends State<ItemsApp> {
                       flex: 1,
                       child: Container(
                         width: 420,
-                        height: 45,
+                        height: 40,
                         margin: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(12),
                           // border: Border.all(color: Colors.white),
                           color: const Color.fromRGBO(237, 238, 252, 1.0),
                         ),
@@ -251,7 +253,7 @@ class _ItemsAppState extends State<ItemsApp> {
                                           Icons.circle,
                                           color: Color.fromRGBO(
                                               0x7F, 0x7F, 0xF8, 1.0),
-                                          size: 24,
+                                          size: 22,
                                         ),
                                         const SizedBox(
                                           width: 8,
@@ -262,7 +264,7 @@ class _ItemsAppState extends State<ItemsApp> {
                                             color: (_modeSelected == "ALL"
                                                 ? Colors.white
                                                 : Colors.black),
-                                            fontSize: 16,
+                                            fontSize: 15,
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
@@ -294,7 +296,7 @@ class _ItemsAppState extends State<ItemsApp> {
                                         Icons.circle,
                                         color: Color.fromRGBO(
                                             0x14, 0xB8, 0xA6, 1.0),
-                                        size: 24,
+                                        size: 22,
                                       ),
                                       const SizedBox(
                                         width: 8,
@@ -305,7 +307,7 @@ class _ItemsAppState extends State<ItemsApp> {
                                           color: (_modeSelected == "STORE_SALES"
                                               ? Colors.white
                                               : Colors.black),
-                                          fontSize: 16,
+                                          fontSize: 15,
                                         ),
                                       ),
                                     ],
@@ -339,7 +341,7 @@ class _ItemsAppState extends State<ItemsApp> {
                                         Icons.circle,
                                         color: Color.fromRGBO(
                                             0xFF, 0x6E, 0x26, 1.0),
-                                        size: 24,
+                                        size: 22,
                                       ),
                                       const SizedBox(
                                         width: 8,
@@ -351,7 +353,7 @@ class _ItemsAppState extends State<ItemsApp> {
                                               (_modeSelected == "DELIVERY_SALES"
                                                   ? Colors.white
                                                   : Colors.black),
-                                          fontSize: 16,
+                                          fontSize: 15,
                                         ),
                                       ),
                                     ],
@@ -442,14 +444,14 @@ class _ItemsAppState extends State<ItemsApp> {
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 3,
+                                      flex: 2,
                                       child: Text(
                                         '건수',
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 3,
+                                      flex: 2,
                                       child: Text(
                                         '매출액',
                                         textAlign: TextAlign.center,
@@ -570,13 +572,13 @@ class _ItemsAppState extends State<ItemsApp> {
                 textAlign: TextAlign.left,
               )),
           Expanded(
-              flex: 3,
+              flex: 2,
               child: Text(
                 '$itemCount건',
                 textAlign: TextAlign.right,
               )),
           Expanded(
-              flex: 3,
+              flex: 2,
               child: Text(
                 AppUtil.formatPrice(salesAmount),
                 textAlign: TextAlign.right,
